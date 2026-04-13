@@ -1,0 +1,228 @@
+export type ChapterId = 'grundbiologi' | 'ekologi' | 'kroppen' | 'nervsystemet' | 'genetik' | 'evolution';
+
+export interface Flashcard {
+  id: string;
+  term: string;
+  definition: string;
+}
+
+export interface QuizQuestion {
+  id: string;
+  question: string;
+  type: 'multiple-choice' | 'open-ended';
+  options?: string[];
+  correctAnswer: string;
+  explanation?: string;
+}
+
+export interface Chapter {
+  id: ChapterId;
+  title: string;
+  subtitle: string;
+  icon: string;
+  colorClass: string;
+  flashcards: Flashcard[];
+  questions: QuizQuestion[];
+  vocabulary: string[];
+}
+
+export const chapters: Chapter[] = [
+  {
+    id: 'grundbiologi',
+    title: 'Grundbiologi',
+    subtitle: 'Celler, organismer, bakterier & virus',
+    icon: '🔬',
+    colorClass: 'chapter-card-grundbiologi',
+    vocabulary: ['cell', 'cellmembran', 'cellkärna', 'mitokondrie', 'kloroplast', 'bakterie', 'virus', 'organism', 'fotosyntes', 'cellandning', 'DNA', 'prokaryot', 'eukaryot', 'encellig', 'flercellig'],
+    flashcards: [
+      { id: 'gb1', term: 'Cell', definition: 'Den minsta levande enheten. Alla levande organismer är uppbyggda av celler.' },
+      { id: 'gb2', term: 'Cellmembran', definition: 'Det tunna skiktet som omger cellen och kontrollerar vad som passerar in och ut.' },
+      { id: 'gb3', term: 'Cellkärna', definition: 'Cellens kontrollcentrum som innehåller DNA med genetisk information.' },
+      { id: 'gb4', term: 'Mitokondrie', definition: 'Cellens kraftverk – här sker cellandningen där energi frigörs från socker.' },
+      { id: 'gb5', term: 'Kloroplast', definition: 'Organell i växtceller där fotosyntesen sker. Innehåller klorofyll.' },
+      { id: 'gb6', term: 'Prokaryot cell', definition: 'En cell utan cellkärna, t.ex. bakterier. DNA:t ligger fritt i cellens cytoplasma.' },
+      { id: 'gb7', term: 'Eukaryot cell', definition: 'En cell med cellkärna, t.ex. djur- och växtceller.' },
+      { id: 'gb8', term: 'Virus', definition: 'Inte en levande organism – saknar egen ämnesomsättning. Behöver en värdcell för att föröka sig.' },
+      { id: 'gb9', term: 'Bakterie', definition: 'Encellig prokaryot organism. Kan vara nyttig eller skadlig.' },
+      { id: 'gb10', term: 'Cellandning', definition: 'Processen där cellen bryter ner socker med syre och frigör energi: C₆H₁₂O₆ + 6O₂ → 6CO₂ + 6H₂O + energi' },
+    ],
+    questions: [
+      { id: 'gbq1', question: 'Vilken organell kallas cellens kraftverk?', type: 'multiple-choice', options: ['Kloroplast', 'Mitokondrie', 'Cellkärna', 'Ribosom'], correctAnswer: 'Mitokondrie', explanation: 'Mitokondrien bryter ner socker och frigör energi genom cellandning.' },
+      { id: 'gbq2', question: 'Vad skiljer en prokaryot cell från en eukaryot cell?', type: 'multiple-choice', options: ['Prokaryota celler har cellkärna', 'Eukaryota celler saknar cellmembran', 'Prokaryota celler saknar cellkärna', 'Eukaryota celler är alltid encelliga'], correctAnswer: 'Prokaryota celler saknar cellkärna', explanation: 'Prokaryota celler (bakterier) har inget kärnmembran. DNA:t ligger fritt.' },
+      { id: 'gbq3', question: 'Varför räknas virus inte som levande organismer?', type: 'open-ended', correctAnswer: 'Virus saknar egen ämnesomsättning och kan inte föröka sig utan en värdcell. De uppfyller inte alla kriterier för liv.' },
+      { id: 'gbq4', question: 'Var sker fotosyntesen i en växtcell?', type: 'multiple-choice', options: ['Mitokondrien', 'Cellkärnan', 'Kloroplasten', 'Cellmembranet'], correctAnswer: 'Kloroplasten', explanation: 'Kloroplasten innehåller klorofyll som fångar solljus för fotosyntesen.' },
+      { id: 'gbq5', question: 'Vad är cellmembranets huvudsakliga funktion?', type: 'multiple-choice', options: ['Lagra DNA', 'Producera energi', 'Kontrollera vad som passerar in och ut ur cellen', 'Bryta ner avfall'], correctAnswer: 'Kontrollera vad som passerar in och ut ur cellen' },
+      { id: 'gbq6', question: 'Skriv den kemiska formeln för cellandning.', type: 'open-ended', correctAnswer: 'C₆H₁₂O₆ + 6O₂ → 6CO₂ + 6H₂O + energi. Socker och syre omvandlas till koldioxid, vatten och energi.' },
+      { id: 'gbq7', question: 'Vilken av följande är en skillnad mellan djurceller och växtceller?', type: 'multiple-choice', options: ['Djurceller har cellkärna', 'Växtceller har cellvägg och kloroplaster', 'Djurceller har mitokondrier', 'Växtceller saknar cellmembran'], correctAnswer: 'Växtceller har cellvägg och kloroplaster' },
+      { id: 'gbq8', question: 'Ge ett exempel på en nyttig bakterie och förklara varför den är nyttig.', type: 'open-ended', correctAnswer: 'Tarmbakterier hjälper oss att bryta ner mat och ta upp näring. Mjölksyrabakterier används vid fermentering av t.ex. yoghurt.' },
+      { id: 'gbq9', question: 'Vad innehåller cellkärnan?', type: 'multiple-choice', options: ['Klorofyll', 'DNA', 'Socker', 'Syre'], correctAnswer: 'DNA', explanation: 'Cellkärnan innehåller arvsmassa (DNA) som styr cellens funktioner.' },
+      { id: 'gbq10', question: 'Vad menas med att en organism är flercellig?', type: 'multiple-choice', options: ['Den har bara en cell', 'Den är uppbyggd av många celler med olika funktioner', 'Den saknar celler', 'Den har bara prokaryota celler'], correctAnswer: 'Den är uppbyggd av många celler med olika funktioner' },
+      { id: 'gbq11', question: 'Beskriv skillnaden mellan bakterier och virus.', type: 'open-ended', correctAnswer: 'Bakterier är levande encelliga organismer som kan föröka sig själva. Virus är inte levande – de behöver en värdcell för att kopiera sig och saknar egen ämnesomsättning.' },
+    ],
+  },
+  {
+    id: 'ekologi',
+    title: 'Ekologi',
+    subtitle: 'Ekosystem, näringskedjor, fotosyntes & biologisk mångfald',
+    icon: '🌿',
+    colorClass: 'chapter-card-ekologi',
+    vocabulary: ['ekosystem', 'biotop', 'population', 'näringskejda', 'näringsväv', 'producent', 'konsument', 'nedbrytare', 'fotosyntes', 'biologisk mångfald', 'kretslopp', 'kolets kretslopp', 'kvävets kretslopp', 'symbios', 'parasitism'],
+    flashcards: [
+      { id: 'ek1', term: 'Ekosystem', definition: 'Ett avgränsat område i naturen med alla levande organismer och den icke-levande miljön (vatten, luft, mark).' },
+      { id: 'ek2', term: 'Producent', definition: 'Organismer som producerar sin egen näring genom fotosyntes, t.ex. växter och alger.' },
+      { id: 'ek3', term: 'Konsument', definition: 'Organismer som äter andra organismer för att få energi. Primärkonsumenter äter växter.' },
+      { id: 'ek4', term: 'Nedbrytare', definition: 'Organismer (svampar, bakterier) som bryter ner dött organiskt material och återför näringsämnen till marken.' },
+      { id: 'ek5', term: 'Näringskedja', definition: 'Visar hur energi överförs från en organism till en annan: producent → primärkonsument → sekundärkonsument.' },
+      { id: 'ek6', term: 'Fotosyntes', definition: '6CO₂ + 6H₂O + solenergi → C₆H₁₂O₆ + 6O₂. Växter omvandlar koldioxid och vatten till socker och syre.' },
+      { id: 'ek7', term: 'Biologisk mångfald', definition: 'Variation av arter, gener och ekosystem. Hög mångfald gör ekosystem mer stabila.' },
+      { id: 'ek8', term: 'Kolets kretslopp', definition: 'Kol cirkulerar mellan atmosfären, levande organismer och marken genom fotosyntes, cellandning och förbränning.' },
+      { id: 'ek9', term: 'Symbios', definition: 'Nära samlevnad mellan två arter som gynnar minst en av dem.' },
+      { id: 'ek10', term: 'Näringsväv', definition: 'Ett nätverk av sammankopplade näringskedjor i ett ekosystem.' },
+    ],
+    questions: [
+      { id: 'ekq1', question: 'Vad är skillnaden mellan en näringskedja och en näringsväv?', type: 'open-ended', correctAnswer: 'En näringskedja visar en enkel rad av vem som äter vem. En näringsväv visar flera sammankopplade näringskedjor – alltså ett mer realistiskt nätverk av ätande-relationer i ett ekosystem.' },
+      { id: 'ekq2', question: 'Vilken roll har nedbrytare i ett ekosystem?', type: 'multiple-choice', options: ['De äter andra djur', 'De producerar syre', 'De bryter ner dött material och återför näring', 'De bygger upp nya växter'], correctAnswer: 'De bryter ner dött material och återför näring' },
+      { id: 'ekq3', question: 'Vad behöver en växt för att utföra fotosyntes?', type: 'multiple-choice', options: ['Syre och socker', 'Koldioxid, vatten och solljus', 'Kväve och syre', 'Mineraler och värme'], correctAnswer: 'Koldioxid, vatten och solljus' },
+      { id: 'ekq4', question: 'Varför är biologisk mångfald viktig?', type: 'open-ended', correctAnswer: 'Hög biologisk mångfald gör ekosystem mer stabila och motståndskraftiga. Om en art försvinner kan andra ta över dess roll. Det ger också fler ekosystemtjänster som pollinering och vattenrening.' },
+      { id: 'ekq5', question: 'Vad händer i kolets kretslopp?', type: 'multiple-choice', options: ['Kol försvinner från jorden', 'Kol cirkulerar mellan atmosfären, växter och mark', 'Kol skapas av bakterier', 'Kol finns bara i havet'], correctAnswer: 'Kol cirkulerar mellan atmosfären, växter och mark' },
+      { id: 'ekq6', question: 'Vad menas med en producent i ett ekosystem?', type: 'multiple-choice', options: ['Ett djur som jagar', 'En organism som tillverkar sin egen näring genom fotosyntes', 'En svamp som bryter ner material', 'En bakterie i marken'], correctAnswer: 'En organism som tillverkar sin egen näring genom fotosyntes' },
+      { id: 'ekq7', question: 'Förklara vad som händer med energin i en näringskedja.', type: 'open-ended', correctAnswer: 'Energin minskar i varje steg. Bara ca 10% av energin förs vidare till nästa nivå. Resten förbrukas som värme genom cellandning.' },
+      { id: 'ekq8', question: 'Vilken typ av organism befinner sig alltid längst ner i en näringskedja?', type: 'multiple-choice', options: ['Rovdjur', 'Nedbrytare', 'Producent (växt/alg)', 'Parasit'], correctAnswer: 'Producent (växt/alg)' },
+      { id: 'ekq9', question: 'Vad är symbios? Ge ett exempel.', type: 'open-ended', correctAnswer: 'Symbios är nära samlevnad mellan två arter. Exempel: lavar – en svamp och en alg lever tillsammans. Algen gör fotosyntes och svampen ger skydd och fukt.' },
+      { id: 'ekq10', question: 'Hur påverkar människan den biologiska mångfalden negativt?', type: 'multiple-choice', options: ['Genom att plantera träd', 'Genom avskogning, föroreningar och överfiske', 'Genom att skapa naturreservat', 'Genom att återvinna'], correctAnswer: 'Genom avskogning, föroreningar och överfiske' },
+      { id: 'ekq11', question: 'Vad händer om toppkonsumenten försvinner ur ett ekosystem?', type: 'open-ended', correctAnswer: 'Om toppkonsumenten (t.ex. varg) försvinner kan populationen av bytesdjur (t.ex. rådjur) öka okontrollerat, vilket leder till överbetning och att ekosystemet blir obalanserat.' },
+    ],
+  },
+  {
+    id: 'kroppen',
+    title: 'Människokroppen',
+    subtitle: 'Matspjälkning, cirkulation, andning & skelett',
+    icon: '❤️',
+    colorClass: 'chapter-card-kroppen',
+    vocabulary: ['matspjälkning', 'enzym', 'tunntarm', 'tjocktarm', 'lever', 'hjärta', 'artär', 'ven', 'kapillär', 'lungor', 'alveol', 'hemoglobin', 'skelett', 'muskel', 'led'],
+    flashcards: [
+      { id: 'kr1', term: 'Matspjälkning', definition: 'Nedbrytning av mat till mindre näringsämnen som kroppen kan ta upp. Börjar i munnen och slutar i tarmen.' },
+      { id: 'kr2', term: 'Enzym', definition: 'Proteiner som snabbar upp kemiska reaktioner i kroppen, t.ex. amylas bryter ner stärkelse.' },
+      { id: 'kr3', term: 'Tunntarmen', definition: 'Här tas näring upp i blodet genom tarmluddet. Största delen av matspjälkningen sker här.' },
+      { id: 'kr4', term: 'Hjärtat', definition: 'En muskel som pumpar blod genom kroppen. Har fyra kammare: två förmak och två kammare.' },
+      { id: 'kr5', term: 'Artär', definition: 'Blodkärl som för blod FRÅN hjärtat. Har tjocka, elastiska väggar.' },
+      { id: 'kr6', term: 'Ven', definition: 'Blodkärl som för blod TILL hjärtat. Har klaffar som hindrar blodet att rinna tillbaka.' },
+      { id: 'kr7', term: 'Kapillär', definition: 'Mycket tunna blodkärl där utbyte av syre, koldioxid och näring sker med vävnaderna.' },
+      { id: 'kr8', term: 'Alveoler', definition: 'Lungblåsor där gasutbytet sker – syre tas upp i blodet och koldioxid avges.' },
+      { id: 'kr9', term: 'Hemoglobin', definition: 'Protein i röda blodkroppar som binder syre och transporterar det i blodet.' },
+      { id: 'kr10', term: 'Led', definition: 'Där två ben möts. Brosk skyddar benändarna och ledvätska smörjer rörelsen.' },
+    ],
+    questions: [
+      { id: 'krq1', question: 'Var i kroppen börjar matspjälkningen?', type: 'multiple-choice', options: ['I magen', 'I munnen', 'I tunntarmen', 'I levern'], correctAnswer: 'I munnen', explanation: 'Matspjälkningen börjar i munnen där tänderna tuggar maten och enzymet amylas börjar bryta ner stärkelse.' },
+      { id: 'krq2', question: 'Vad är tunntarmens huvuduppgift?', type: 'multiple-choice', options: ['Lagra avfall', 'Ta upp näring i blodet', 'Producera enzymer', 'Filtrera blodet'], correctAnswer: 'Ta upp näring i blodet' },
+      { id: 'krq3', question: 'Förklara blodets väg genom hjärtat.', type: 'open-ended', correctAnswer: 'Syrefattigt blod kommer till höger förmak via hålvenen → höger kammare → lungorna (får syre) → vänster förmak → vänster kammare → ut till kroppen via aorta.' },
+      { id: 'krq4', question: 'Vad skiljer artärer från vener?', type: 'open-ended', correctAnswer: 'Artärer för blod FRÅN hjärtat och har tjocka, elastiska väggar. Vener för blod TILL hjärtat och har klaffar som hindrar blodet att rinna tillbaka.' },
+      { id: 'krq5', question: 'Var sker gasutbytet i lungorna?', type: 'multiple-choice', options: ['I luftstrupen', 'I bronkerna', 'I alveolerna', 'I näsan'], correctAnswer: 'I alveolerna', explanation: 'Alveolerna (lungblåsorna) har mycket tunna väggar som möjliggör utbyte av syre och koldioxid.' },
+      { id: 'krq6', question: 'Vad gör hemoglobin?', type: 'multiple-choice', options: ['Bryter ner mat', 'Transporterar syre i blodet', 'Bekämpar infektioner', 'Bildar blodplättar'], correctAnswer: 'Transporterar syre i blodet' },
+      { id: 'krq7', question: 'Vilken funktion har levern i matspjälkningen?', type: 'multiple-choice', options: ['Producerar saltsyra', 'Producerar galla som bryter ner fett', 'Tar upp näring', 'Lagrar avfall'], correctAnswer: 'Producerar galla som bryter ner fett' },
+      { id: 'krq8', question: 'Beskriv skelettets tre huvudfunktioner.', type: 'open-ended', correctAnswer: 'Skelettets tre huvudfunktioner: 1) Stöd – ger kroppen form och håller oss upprätta. 2) Skydd – skyddar inre organ (t.ex. revben skyddar lungor). 3) Rörelse – muskler fäster vid ben och möjliggör rörelse.' },
+      { id: 'krq9', question: 'Vad är en kapillärs funktion?', type: 'multiple-choice', options: ['Pumpa blod', 'Utbyte av syre och näring med vävnader', 'Filtrera blod', 'Producera blodceller'], correctAnswer: 'Utbyte av syre och näring med vävnader' },
+      { id: 'krq10', question: 'Varför behöver vi enzymer?', type: 'open-ended', correctAnswer: 'Enzymer är biologiska katalysatorer som snabbar upp kemiska reaktioner i kroppen. Utan dem skulle matspjälkning och andra processer gå alldeles för långsamt.' },
+    ],
+  },
+  {
+    id: 'nervsystemet',
+    title: 'Nervsystemet',
+    subtitle: 'Neuroner, hjärnan, hormoner & sinnen',
+    icon: '🧠',
+    colorClass: 'chapter-card-nervsystemet',
+    vocabulary: ['neuron', 'synaps', 'centrala nervsystemet', 'perifera nervsystemet', 'reflex', 'hormon', 'hypofysen', 'adrenalin', 'insulin', 'receptor', 'storhjärnan', 'lillhjärnan', 'hjärnstammen'],
+    flashcards: [
+      { id: 'ns1', term: 'Neuron', definition: 'En nervcell som skickar elektriska signaler. Består av cellkropp, dendriter (tar emot) och axon (skickar vidare).' },
+      { id: 'ns2', term: 'Synaps', definition: 'Kontaktpunkten mellan två nervceller. Signalen överförs kemiskt med signalsubstanser.' },
+      { id: 'ns3', term: 'Centrala nervsystemet (CNS)', definition: 'Hjärnan och ryggmärgen – bearbetar information och styr kroppen.' },
+      { id: 'ns4', term: 'Reflex', definition: 'En snabb, automatisk reaktion som inte går via hjärnan, t.ex. att dra bort handen från något hett.' },
+      { id: 'ns5', term: 'Hormon', definition: 'Kemiska budbärare som transporteras i blodet och påverkar organ och funktioner på avstånd.' },
+      { id: 'ns6', term: 'Adrenalin', definition: 'Stresshormon som utsöndras av binjurarna. Ökar puls och andning, förbereder kroppen för "kamp eller flykt".' },
+      { id: 'ns7', term: 'Insulin', definition: 'Hormon från bukspottkörteln som sänker blodsockernivån genom att hjälpa celler ta upp glukos.' },
+      { id: 'ns8', term: 'Storhjärnan', definition: 'Största delen av hjärnan. Ansvarar för tankar, minne, medvetna rörelser och sinnesintryck.' },
+      { id: 'ns9', term: 'Lillhjärnan', definition: 'Kontrollerar balans och koordinerar rörelser.' },
+      { id: 'ns10', term: 'Receptor', definition: 'Sinnesceller som tar emot stimuli (ljus, ljud, tryck, smak, lukt) och omvandlar dem till nervsignaler.' },
+    ],
+    questions: [
+      { id: 'nsq1', question: 'Vad är skillnaden mellan det centrala och perifera nervsystemet?', type: 'open-ended', correctAnswer: 'Centrala nervsystemet (CNS) består av hjärnan och ryggmärgen – det bearbetar information. Perifera nervsystemet består av alla nerver i resten av kroppen som skickar signaler till och från CNS.' },
+      { id: 'nsq2', question: 'Hur överförs en signal i en synaps?', type: 'multiple-choice', options: ['Med ljus', 'Med elektrisk ström genom en kabel', 'Med kemiska signalsubstanser', 'Med hormoner i blodet'], correctAnswer: 'Med kemiska signalsubstanser' },
+      { id: 'nsq3', question: 'Varför är reflexer snabbare än medvetna reaktioner?', type: 'open-ended', correctAnswer: 'Reflexer går inte via hjärnan – signalen går direkt från sinnesorgan till ryggmärg och tillbaka till muskeln. Det sparar tid och skyddar oss från fara.' },
+      { id: 'nsq4', question: 'Vad gör hormonet insulin?', type: 'multiple-choice', options: ['Ökar blodtrycket', 'Sänker blodsockernivån', 'Ger energi till muskler', 'Styr sömnen'], correctAnswer: 'Sänker blodsockernivån' },
+      { id: 'nsq5', question: 'Vilken del av hjärnan styr balans och koordination?', type: 'multiple-choice', options: ['Storhjärnan', 'Hjärnstammen', 'Lillhjärnan', 'Hypofysen'], correctAnswer: 'Lillhjärnan' },
+      { id: 'nsq6', question: 'Förklara skillnaden mellan hormoner och nervsignaler.', type: 'open-ended', correctAnswer: 'Nervsignaler är snabba, elektriska och går via nervbanor till specifika mål. Hormoner transporteras långsamt via blodet och påverkar många organ under längre tid.' },
+      { id: 'nsq7', question: 'Vad händer i kroppen när adrenalin utsöndras?', type: 'multiple-choice', options: ['Man blir sömnig', 'Pulsen ökar och kroppen förbereds för kamp eller flykt', 'Blodsockret sjunker', 'Matspjälkningen ökar'], correctAnswer: 'Pulsen ökar och kroppen förbereds för kamp eller flykt' },
+      { id: 'nsq8', question: 'Vad är en receptor?', type: 'multiple-choice', options: ['En muskel', 'En sinnescell som tar emot stimuli', 'Ett hormon', 'En del av hjärtat'], correctAnswer: 'En sinnescell som tar emot stimuli' },
+      { id: 'nsq9', question: 'Vad styr storhjärnan?', type: 'open-ended', correctAnswer: 'Storhjärnan ansvarar för medvetna funktioner som tankar, minne, inlärning, medvetna rörelser, språk och tolkning av sinnesintryck.' },
+      { id: 'nsq10', question: 'Vad händer om en person har diabetes typ 1?', type: 'open-ended', correctAnswer: 'Kroppen kan inte producera insulin, så blodsockret kan inte regleras. Personen måste ta insulin via sprutor eller pump för att sänka blodsockret.' },
+    ],
+  },
+  {
+    id: 'genetik',
+    title: 'Genetik',
+    subtitle: 'DNA, kromosomer, arv & mutationer',
+    icon: '🧬',
+    colorClass: 'chapter-card-genetik',
+    vocabulary: ['DNA', 'gen', 'kromosom', 'allel', 'dominant', 'recessiv', 'genotyp', 'fenotyp', 'mutation', 'meios', 'mitos', 'korsningsschema', 'arvsmassa', 'könscell'],
+    flashcards: [
+      { id: 'ge1', term: 'DNA', definition: 'Deoxiribonukleinsyra – molekylen som bär den genetiska informationen. Formad som en dubbelspiral.' },
+      { id: 'ge2', term: 'Gen', definition: 'En bit av DNA som kodar för en viss egenskap, t.ex. ögonfärg.' },
+      { id: 'ge3', term: 'Kromosom', definition: 'En lång DNA-molekyl som är upprullad. Människan har 46 kromosomer (23 par).' },
+      { id: 'ge4', term: 'Allel', definition: 'En variant av en gen. Vi har två alleler för varje gen – en från mamma och en från pappa.' },
+      { id: 'ge5', term: 'Dominant allel', definition: 'En allel som uttrycks (syns) även om bara en kopia finns. Skrivs med stor bokstav (t.ex. B).' },
+      { id: 'ge6', term: 'Recessiv allel', definition: 'En allel som bara uttrycks om det finns två kopior (homozygot). Skrivs med liten bokstav (t.ex. b).' },
+      { id: 'ge7', term: 'Genotyp', definition: 'Den genetiska uppsättningen, t.ex. Bb eller bb.' },
+      { id: 'ge8', term: 'Fenotyp', definition: 'Det synliga uttrycket av genotypen – hur organismen ser ut.' },
+      { id: 'ge9', term: 'Mutation', definition: 'En förändring i DNA-sekvensen. Kan vara skadlig, neutral eller i sällsynta fall fördelaktig.' },
+      { id: 'ge10', term: 'Meios', definition: 'Reduktionsdelning – celldelning som bildar könsceller med halva antalet kromosomer (23 st).' },
+      { id: 'ge11', term: 'Mitos', definition: 'Celldelning som ger två identiska dotterceller med 46 kromosomer. Används vid tillväxt och reparation.' },
+    ],
+    questions: [
+      { id: 'geq1', question: 'Hur många kromosomer har en mänsklig cell?', type: 'multiple-choice', options: ['23', '46', '44', '92'], correctAnswer: '46', explanation: '23 par = 46 kromosomer totalt. Könsceller har 23.' },
+      { id: 'geq2', question: 'Vad är skillnaden mellan genotyp och fenotyp?', type: 'open-ended', correctAnswer: 'Genotyp är den genetiska uppsättningen (t.ex. Bb). Fenotyp är det som syns utåt (t.ex. bruna ögon). Fenotypen bestäms av genotypen.' },
+      { id: 'geq3', question: 'En person har genotypen Bb (B = bruna ögon, dominant). Vilken ögonfärg har personen?', type: 'multiple-choice', options: ['Blå', 'Bruna', 'Gröna', 'En blandning'], correctAnswer: 'Bruna', explanation: 'B är dominant, så Bb ger bruna ögon.' },
+      { id: 'geq4', question: 'Vad är en mutation?', type: 'multiple-choice', options: ['En ny art', 'En förändring i DNA-sekvensen', 'En typ av kromosom', 'En celldelning'], correctAnswer: 'En förändring i DNA-sekvensen' },
+      { id: 'geq5', question: 'Förklara skillnaden mellan mitos och meios.', type: 'open-ended', correctAnswer: 'Mitos ger två identiska celler med 46 kromosomer (tillväxt). Meios ger fyra könsceller med 23 kromosomer vardera (för fortplantning).' },
+      { id: 'geq6', question: 'Två föräldrar med genotyp Bb får barn. Vilka genotyper kan barnet få?', type: 'open-ended', correctAnswer: 'BB, Bb eller bb. Korsningsschema: BB (25%), Bb (50%), bb (25%). Alltså 75% chans för dominant fenotyp och 25% chans för recessiv.' },
+      { id: 'geq7', question: 'Vad är en allel?', type: 'multiple-choice', options: ['En hel kromosom', 'En variant av en gen', 'En typ av cell', 'Ett protein'], correctAnswer: 'En variant av en gen' },
+      { id: 'geq8', question: 'Varför ser syskon olika ut trots att de har samma föräldrar?', type: 'open-ended', correctAnswer: 'Vid meios blandas generna slumpmässigt. Varje könscell får en unik kombination av alleler. Dessutom sker överkorsning som skapar ännu mer variation.' },
+      { id: 'geq9', question: 'Vilken typ av celldelning bildar könsceller?', type: 'multiple-choice', options: ['Mitos', 'Meios', 'Fotosyntes', 'Cellandning'], correctAnswer: 'Meios' },
+      { id: 'geq10', question: 'Kan en mutation vara positiv? Förklara.', type: 'open-ended', correctAnswer: 'Ja, i sällsynta fall kan en mutation ge en fördel, t.ex. bättre motståndskraft mot sjukdomar. Sådana mutationer kan spridas genom naturligt urval.' },
+    ],
+  },
+  {
+    id: 'evolution',
+    title: 'Evolution',
+    subtitle: 'Naturligt urval, fossil, Darwin & människans evolution',
+    icon: '🦕',
+    colorClass: 'chapter-card-evolution',
+    vocabulary: ['evolution', 'naturligt urval', 'anpassning', 'fossil', 'art', 'artbildning', 'Darwin', 'variation', 'selektion', 'gemensam anfader', 'överlevnad', 'fortplantning'],
+    flashcards: [
+      { id: 'ev1', term: 'Evolution', definition: 'Förändring av arter över lång tid. Drivs av naturligt urval, mutationer och genetisk drift.' },
+      { id: 'ev2', term: 'Naturligt urval', definition: 'De individer som är bäst anpassade till sin miljö överlever och för vidare sina gener. "Survival of the fittest".' },
+      { id: 'ev3', term: 'Fossil', definition: 'Bevarade rester av organismer som levde för länge sedan. Bevis för evolution.' },
+      { id: 'ev4', term: 'Charles Darwin', definition: 'Brittisk forskare som formulerade teorin om evolution genom naturligt urval efter sin resa med HMS Beagle.' },
+      { id: 'ev5', term: 'Anpassning', definition: 'En egenskap som utvecklats genom evolution och ger en organism fördel i sin miljö.' },
+      { id: 'ev6', term: 'Artbildning', definition: 'Processen där en population delas upp och utvecklas till separata arter, t.ex. genom geografisk isolering.' },
+      { id: 'ev7', term: 'Gemensam anfader', definition: 'En art som två eller fler nutida arter härstammar från. Alla levande varelser har gemensamma förfäder.' },
+      { id: 'ev8', term: 'Variation', definition: 'Skillnader mellan individer inom en art. Nödvändigt för naturligt urval.' },
+      { id: 'ev9', term: 'Genetisk drift', definition: 'Slumpmässiga förändringar i genfrekvens, särskilt i små populationer.' },
+      { id: 'ev10', term: 'Människans evolution', definition: 'Människan utvecklades i Afrika från apliknande förfäder. Homo sapiens uppstod för ca 300 000 år sedan.' },
+    ],
+    questions: [
+      { id: 'evq1', question: 'Vad menas med naturligt urval?', type: 'open-ended', correctAnswer: 'Naturligt urval innebär att de individer som är bäst anpassade till sin miljö har störst chans att överleva och fortplanta sig, och därmed föra sina gener vidare till nästa generation.' },
+      { id: 'evq2', question: 'Vem formulerade teorin om evolution genom naturligt urval?', type: 'multiple-choice', options: ['Linné', 'Mendel', 'Darwin', 'Lamarck'], correctAnswer: 'Darwin' },
+      { id: 'evq3', question: 'Vad är ett fossil?', type: 'multiple-choice', options: ['En levande organism', 'Bevarade rester av forntida organismer', 'En typ av mineral', 'Ett DNA-prov'], correctAnswer: 'Bevarade rester av forntida organismer' },
+      { id: 'evq4', question: 'Förklara hur artbildning kan ske.', type: 'open-ended', correctAnswer: 'Artbildning sker t.ex. genom geografisk isolering: en population delas upp (t.ex. av en bergskedja). De separata grupperna anpassas till sina olika miljöer och utvecklas till skilda arter som inte längre kan fortplanta sig med varandra.' },
+      { id: 'evq5', question: 'Varför är variation inom en art viktigt för evolution?', type: 'open-ended', correctAnswer: 'Variation ger individer olika egenskaper. Om miljön förändras kan de individer med fördelaktiga egenskaper överleva bättre, vilket driver evolution genom naturligt urval.' },
+      { id: 'evq6', question: 'Hur kan fossil användas som bevis för evolution?', type: 'multiple-choice', options: ['De visar att arter alltid sett likadana ut', 'De visar att arter förändrats över tid', 'De bevisar att evolution inte sker', 'De visar hur DNA ser ut'], correctAnswer: 'De visar att arter förändrats över tid' },
+      { id: 'evq7', question: 'Vad menas med gemensam anfader?', type: 'multiple-choice', options: ['Två djur som lever samtidigt', 'En art som andra arter härstammar från', 'En utdöd art utan ättlingar', 'Den första människan'], correctAnswer: 'En art som andra arter härstammar från' },
+      { id: 'evq8', question: 'Var utvecklades de första moderna människorna (Homo sapiens)?', type: 'multiple-choice', options: ['Europa', 'Asien', 'Afrika', 'Sydamerika'], correctAnswer: 'Afrika', explanation: 'Homo sapiens utvecklades i Afrika för ca 300 000 år sedan och spred sig sedan till resten av världen.' },
+      { id: 'evq9', question: 'Förklara skillnaden mellan Darwins och Lamarcks syn på evolution.', type: 'open-ended', correctAnswer: 'Lamarck trodde att egenskaper som förvärvades under livet kunde ärvas (t.ex. att giraffens hals blev lång av att sträcka sig). Darwin menade att naturligt urval gynnade de individer som redan hade fördelaktiga egenskaper tack vare slumpmässig variation.' },
+      { id: 'evq10', question: 'Vad är anpassning i biologisk mening?', type: 'multiple-choice', options: ['Att ändra sig medvetet', 'En egenskap som utvecklats genom evolution och ger en fördel', 'Att flytta till en ny miljö', 'Att lära sig nya saker'], correctAnswer: 'En egenskap som utvecklats genom evolution och ger en fördel' },
+      { id: 'evq11', question: 'Ge ett exempel på hur naturligt urval fungerar.', type: 'open-ended', correctAnswer: 'Exempel: Björkmätarfjärilarna i England. Ljusa fjärilar var kamouflerade på ljusa trädstammar. När industrialiseringen svärtade stammarna, överlevde mörka fjärilar bättre och blev vanligare. När luften blev renare igen ökade ljusa fjärilar.' },
+    ],
+  },
+];
+
+export const getChapter = (id: ChapterId): Chapter | undefined => chapters.find(c => c.id === id);
