@@ -36,14 +36,23 @@ interface ProgressState {
 
 const defaultBadges: Badge[] = [
   { id: 'first-quiz', title: 'Första quizet!', description: 'Klara ditt första quiz', icon: '🎯', earned: false },
+  { id: 'quiz-5', title: 'Quizfantast', description: 'Klara 5 quiz', icon: '📝', earned: false },
+  { id: 'quiz-20', title: 'Quizmaskin', description: 'Klara 20 quiz', icon: '🤖', earned: false },
+  { id: 'quiz-50', title: 'Quizlegend', description: 'Klara 50 quiz', icon: '👑', earned: false },
+  { id: 'perfect-quiz', title: 'Perfekt!', description: 'Få alla rätt på ett quiz', icon: '✨', earned: false },
+  { id: 'perfect-3', title: 'Trippel perfekt', description: 'Få 3 perfekta quiz', icon: '💎', earned: false },
   { id: 'all-chapters', title: 'Utforskaren', description: 'Studera alla 6 kapitel', icon: '🗺️', earned: false },
   { id: 'xp-100', title: 'Hundralansen', description: 'Samla 100 XP', icon: '💯', earned: false },
+  { id: 'xp-250', title: 'Kvartsprofilen', description: 'Samla 250 XP', icon: '🎖️', earned: false },
   { id: 'xp-500', title: 'Halvtusen', description: 'Samla 500 XP', icon: '🌟', earned: false },
   { id: 'xp-1000', title: 'Tusentaktikern', description: 'Samla 1000 XP', icon: '🏆', earned: false },
+  { id: 'xp-2000', title: 'Dubbeltusen', description: 'Samla 2000 XP', icon: '🚀', earned: false },
   { id: 'streak-3', title: 'Trestreak!', description: '3 dagars streak', icon: '🔥', earned: false },
   { id: 'streak-7', title: 'Veckokrigaren', description: '7 dagars streak', icon: '⚡', earned: false },
-  { id: 'perfect-quiz', title: 'Perfekt!', description: 'Få alla rätt på ett quiz', icon: '✨', earned: false },
+  { id: 'streak-14', title: 'Tvåveckorshjälte', description: '14 dagars streak', icon: '🌋', earned: false },
+  { id: 'streak-30', title: 'Månadsmästare', description: '30 dagars streak', icon: '🏅', earned: false },
   { id: 'flashcard-master', title: 'Kortmästaren', description: 'Bemästra alla kort i ett kapitel', icon: '🃏', earned: false },
+  { id: 'flashcard-all', title: 'Totalmästare', description: 'Bemästra alla kort i alla kapitel', icon: '🎓', earned: false },
 ];
 
 const defaultState: ProgressState = {
@@ -153,20 +162,35 @@ export const ProgressProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       if (b && !b.earned) { b.earned = true; b.earnedDate = new Date().toISOString(); }
     };
     if (s.quizResults.length >= 1) earn('first-quiz');
+    if (s.quizResults.length >= 5) earn('quiz-5');
+    if (s.quizResults.length >= 20) earn('quiz-20');
+    if (s.quizResults.length >= 50) earn('quiz-50');
     if (s.chaptersStudied.length >= 6) earn('all-chapters');
     if (s.xp >= 100) earn('xp-100');
+    if (s.xp >= 250) earn('xp-250');
     if (s.xp >= 500) earn('xp-500');
     if (s.xp >= 1000) earn('xp-1000');
+    if (s.xp >= 2000) earn('xp-2000');
     if (s.streak >= 3) earn('streak-3');
     if (s.streak >= 7) earn('streak-7');
-    if (s.quizResults.some(r => r.score === r.total && r.total > 0)) earn('perfect-quiz');
+    if (s.streak >= 14) earn('streak-14');
+    if (s.streak >= 30) earn('streak-30');
+    const perfectQuizzes = s.quizResults.filter(r => r.score === r.total && r.total > 0);
+    if (perfectQuizzes.length >= 1) earn('perfect-quiz');
+    if (perfectQuizzes.length >= 3) earn('perfect-3');
     const chapterIds: ChapterId[] = ['grundbiologi', 'ekologi', 'kroppen', 'nervsystemet', 'genetik', 'evolution'];
+    let allChaptersMastered = true;
     for (const ch of chapterIds) {
       const mastery = s.cardMastery?.[ch];
-      if (!mastery) continue;
+      if (!mastery) { allChaptersMastered = false; continue; }
       const values = Object.values(mastery);
-      if (values.length >= 5 && values.every(v => v === 'mastered')) { earn('flashcard-master'); break; }
+      if (values.length >= 5 && values.every(v => v === 'mastered')) {
+        earn('flashcard-master');
+      } else {
+        allChaptersMastered = false;
+      }
     }
+    if (allChaptersMastered) earn('flashcard-all');
     return { ...s, badges };
   }, []);
 

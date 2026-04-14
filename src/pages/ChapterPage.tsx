@@ -4,9 +4,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { getChapter, ChapterId } from '@/data/chapters';
 import { useProgress } from '@/context/ProgressContext';
 import Flashcard from '@/components/Flashcard';
+import StudyContentView from '@/components/StudyContent';
 import PageHeader from '@/components/PageHeader';
 import BottomNav from '@/components/BottomNav';
-import { BookOpen, HelpCircle, ChevronLeft, ChevronRight } from 'lucide-react';
+import { BookOpen, HelpCircle, ChevronLeft, ChevronRight, FileText } from 'lucide-react';
 
 const ChapterPage = () => {
   const { chapterId } = useParams<{ chapterId: string }>();
@@ -14,12 +15,12 @@ const ChapterPage = () => {
   const chapter = getChapter(chapterId as ChapterId);
   const { cardMastery, setCardMastery, markChapterStudied, addXp, updateStreak } = useProgress();
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
-  const [tab, setTab] = useState<'flashcards' | 'vocabulary'>('flashcards');
+  const [tab, setTab] = useState<'study' | 'flashcards' | 'vocabulary'>('study');
 
   if (!chapter) return <div className="p-8 text-center text-foreground">Kapitlet hittades inte.</div>;
 
   markChapterStudied(chapter.id);
-  const mastery = cardMastery[chapter.id];
+  const mastery = cardMastery[chapter.id] || {};
   const currentCard = chapter.flashcards[currentCardIndex];
 
   const handleMastered = () => {
@@ -48,22 +49,34 @@ const ChapterPage = () => {
           <HelpCircle size={20} /> Starta quiz – {chapter.title}
         </motion.button>
 
-        <div className="flex gap-2 mb-4">
+        <div className="flex gap-2 mb-4 overflow-x-auto">
+          <button
+            onClick={() => setTab('study')}
+            className={`flex items-center gap-1.5 px-4 py-2 rounded-xl font-semibold text-sm transition-colors whitespace-nowrap ${tab === 'study' ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'}`}
+          >
+            <FileText size={16} /> Läs & lär
+          </button>
           <button
             onClick={() => setTab('flashcards')}
-            className={`flex items-center gap-1.5 px-4 py-2 rounded-xl font-semibold text-sm transition-colors ${tab === 'flashcards' ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'}`}
+            className={`flex items-center gap-1.5 px-4 py-2 rounded-xl font-semibold text-sm transition-colors whitespace-nowrap ${tab === 'flashcards' ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'}`}
           >
             <BookOpen size={16} /> Flashcards
           </button>
           <button
             onClick={() => setTab('vocabulary')}
-            className={`flex items-center gap-1.5 px-4 py-2 rounded-xl font-semibold text-sm transition-colors ${tab === 'vocabulary' ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'}`}
+            className={`flex items-center gap-1.5 px-4 py-2 rounded-xl font-semibold text-sm transition-colors whitespace-nowrap ${tab === 'vocabulary' ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'}`}
           >
             Ordlista
           </button>
         </div>
 
         <AnimatePresence mode="wait">
+          {tab === 'study' && (
+            <motion.div key="study" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+              <StudyContentView chapterId={chapter.id} />
+            </motion.div>
+          )}
+
           {tab === 'flashcards' && (
             <motion.div key="flashcards" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
               <div className="flex items-center justify-between mb-3">
