@@ -14,7 +14,51 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      profiles: {
+        Row: {
+          badges: Json
+          card_mastery: Json
+          chapters_studied: Json
+          created_at: string
+          display_name: string
+          id: string
+          last_study_date: string | null
+          quiz_results: Json
+          streak: number
+          updated_at: string
+          user_id: string
+          xp: number
+        }
+        Insert: {
+          badges?: Json
+          card_mastery?: Json
+          chapters_studied?: Json
+          created_at?: string
+          display_name?: string
+          id?: string
+          last_study_date?: string | null
+          quiz_results?: Json
+          streak?: number
+          updated_at?: string
+          user_id: string
+          xp?: number
+        }
+        Update: {
+          badges?: Json
+          card_mastery?: Json
+          chapters_studied?: Json
+          created_at?: string
+          display_name?: string
+          id?: string
+          last_study_date?: string | null
+          quiz_results?: Json
+          streak?: number
+          updated_at?: string
+          user_id?: string
+          xp?: number
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
