@@ -162,20 +162,35 @@ export const ProgressProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       if (b && !b.earned) { b.earned = true; b.earnedDate = new Date().toISOString(); }
     };
     if (s.quizResults.length >= 1) earn('first-quiz');
+    if (s.quizResults.length >= 5) earn('quiz-5');
+    if (s.quizResults.length >= 20) earn('quiz-20');
+    if (s.quizResults.length >= 50) earn('quiz-50');
     if (s.chaptersStudied.length >= 6) earn('all-chapters');
     if (s.xp >= 100) earn('xp-100');
+    if (s.xp >= 250) earn('xp-250');
     if (s.xp >= 500) earn('xp-500');
     if (s.xp >= 1000) earn('xp-1000');
+    if (s.xp >= 2000) earn('xp-2000');
     if (s.streak >= 3) earn('streak-3');
     if (s.streak >= 7) earn('streak-7');
-    if (s.quizResults.some(r => r.score === r.total && r.total > 0)) earn('perfect-quiz');
+    if (s.streak >= 14) earn('streak-14');
+    if (s.streak >= 30) earn('streak-30');
+    const perfectQuizzes = s.quizResults.filter(r => r.score === r.total && r.total > 0);
+    if (perfectQuizzes.length >= 1) earn('perfect-quiz');
+    if (perfectQuizzes.length >= 3) earn('perfect-3');
     const chapterIds: ChapterId[] = ['grundbiologi', 'ekologi', 'kroppen', 'nervsystemet', 'genetik', 'evolution'];
+    let allChaptersMastered = true;
     for (const ch of chapterIds) {
       const mastery = s.cardMastery?.[ch];
-      if (!mastery) continue;
+      if (!mastery) { allChaptersMastered = false; continue; }
       const values = Object.values(mastery);
-      if (values.length >= 5 && values.every(v => v === 'mastered')) { earn('flashcard-master'); break; }
+      if (values.length >= 5 && values.every(v => v === 'mastered')) {
+        earn('flashcard-master');
+      } else {
+        allChaptersMastered = false;
+      }
     }
+    if (allChaptersMastered) earn('flashcard-all');
     return { ...s, badges };
   }, []);
 
