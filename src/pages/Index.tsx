@@ -4,17 +4,28 @@ import { chapters } from '@/data/chapters';
 import ChapterCard from '@/components/ChapterCard';
 import ProgressHeader from '@/components/ProgressHeader';
 import BottomNav from '@/components/BottomNav';
-import { Shuffle } from 'lucide-react';
+import { Shuffle, LogOut } from 'lucide-react';
+import { useAuth } from '@/context/AuthContext';
 
 const Index = () => {
   const navigate = useNavigate();
+  const { signOut, user } = useAuth();
 
   return (
     <div className="min-h-screen bg-background pb-20">
       <div className="container max-w-2xl py-6 px-4">
-        <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <h1 className="text-2xl md:text-3xl font-extrabold text-foreground mb-1">🧬 BioPrepp</h1>
-          <p className="text-sm text-muted-foreground">Plugga inför nationella provet i biologi – åk 9</p>
+        <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="mb-6 flex items-start justify-between">
+          <div>
+            <h1 className="text-2xl md:text-3xl font-extrabold text-foreground mb-1">🧬 BioPrepp</h1>
+            <p className="text-sm text-muted-foreground">Plugga inför nationella provet i biologi – åk 9</p>
+          </div>
+          <button
+            onClick={() => signOut()}
+            className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors mt-1 bg-card border border-border rounded-lg px-3 py-2"
+          >
+            <LogOut size={14} />
+            Logga ut
+          </button>
         </motion.div>
 
         <div className="mb-6">
