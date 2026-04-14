@@ -108,13 +108,14 @@ export const ProgressProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         .from('profiles')
         .select('*')
         .eq('user_id', user.id)
-        .single();
+        .maybeSingle();
       if (data) {
+        const dbMastery = (data.card_mastery as any) || {};
         setState({
           xp: data.xp,
           streak: data.streak,
           lastStudyDate: data.last_study_date,
-          cardMastery: (data.card_mastery as any) || defaultState.cardMastery,
+          cardMastery: { ...defaultState.cardMastery, ...dbMastery },
           quizResults: (data.quiz_results as any) || [],
           badges: (data.badges as any)?.length ? (data.badges as any) : defaultBadges,
           chaptersStudied: (data.chapters_studied as any) || [],
@@ -161,7 +162,8 @@ export const ProgressProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     if (s.quizResults.some(r => r.score === r.total && r.total > 0)) earn('perfect-quiz');
     const chapterIds: ChapterId[] = ['grundbiologi', 'ekologi', 'kroppen', 'nervsystemet', 'genetik', 'evolution'];
     for (const ch of chapterIds) {
-      const mastery = s.cardMastery[ch];
+      const mastery = s.cardMastery?.[ch];
+      if (!mastery) continue;
       const values = Object.values(mastery);
       if (values.length >= 5 && values.every(v => v === 'mastered')) { earn('flashcard-master'); break; }
     }
