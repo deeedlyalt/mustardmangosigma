@@ -200,7 +200,8 @@ export const ProgressProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   };
 
   const getChapterMastery = (chapterId: ChapterId): number => {
-    const mastery = state.cardMastery[chapterId];
+    const mastery = state.cardMastery?.[chapterId];
+    if (!mastery) return 0;
     const values = Object.values(mastery);
     if (values.length === 0) return 0;
     const mastered = values.filter(v => v === 'mastered').length;
