@@ -1,10 +1,11 @@
 import { motion } from 'framer-motion';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Home, Trophy, Lightbulb, Link2 } from 'lucide-react';
+import { Home, Trophy, Lightbulb, Link2, Medal } from 'lucide-react';
 
 const navItems = [
   { path: '/', icon: Home, label: 'Hem' },
   { path: '/connections', icon: Link2, label: 'Samband' },
+  { path: '/leaderboard', icon: Medal, label: 'Topplista' },
   { path: '/progress', icon: Trophy, label: 'Framsteg' },
   { path: '/tips', icon: Lightbulb, label: 'Tips' },
 ];
@@ -23,10 +24,10 @@ const BottomNav = () => {
               key={path}
               whileTap={{ scale: 0.9 }}
               onClick={() => navigate(path)}
-              className={`flex flex-col items-center gap-0.5 px-3 py-1 rounded-lg transition-colors ${isActive ? 'text-primary' : 'text-muted-foreground'}`}
+              className={`flex flex-col items-center gap-0.5 px-2 py-1 rounded-lg transition-colors ${isActive ? 'text-primary' : 'text-muted-foreground'}`}
             >
-              <Icon size={22} />
-              <span className="text-xs font-semibold">{label}</span>
+              <Icon size={20} />
+              <span className="text-[10px] font-semibold">{label}</span>
               {isActive && (
                 <motion.div layoutId="nav-indicator" className="w-1 h-1 rounded-full bg-primary" />
               )}
