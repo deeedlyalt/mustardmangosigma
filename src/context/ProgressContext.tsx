@@ -36,14 +36,23 @@ interface ProgressState {
 
 const defaultBadges: Badge[] = [
   { id: 'first-quiz', title: 'Första quizet!', description: 'Klara ditt första quiz', icon: '🎯', earned: false },
+  { id: 'quiz-5', title: 'Quizfantast', description: 'Klara 5 quiz', icon: '📝', earned: false },
+  { id: 'quiz-20', title: 'Quizmaskin', description: 'Klara 20 quiz', icon: '🤖', earned: false },
+  { id: 'quiz-50', title: 'Quizlegend', description: 'Klara 50 quiz', icon: '👑', earned: false },
+  { id: 'perfect-quiz', title: 'Perfekt!', description: 'Få alla rätt på ett quiz', icon: '✨', earned: false },
+  { id: 'perfect-3', title: 'Trippel perfekt', description: 'Få 3 perfekta quiz', icon: '💎', earned: false },
   { id: 'all-chapters', title: 'Utforskaren', description: 'Studera alla 6 kapitel', icon: '🗺️', earned: false },
   { id: 'xp-100', title: 'Hundralansen', description: 'Samla 100 XP', icon: '💯', earned: false },
+  { id: 'xp-250', title: 'Kvartsprofilen', description: 'Samla 250 XP', icon: '🎖️', earned: false },
   { id: 'xp-500', title: 'Halvtusen', description: 'Samla 500 XP', icon: '🌟', earned: false },
   { id: 'xp-1000', title: 'Tusentaktikern', description: 'Samla 1000 XP', icon: '🏆', earned: false },
+  { id: 'xp-2000', title: 'Dubbeltusen', description: 'Samla 2000 XP', icon: '🚀', earned: false },
   { id: 'streak-3', title: 'Trestreak!', description: '3 dagars streak', icon: '🔥', earned: false },
   { id: 'streak-7', title: 'Veckokrigaren', description: '7 dagars streak', icon: '⚡', earned: false },
-  { id: 'perfect-quiz', title: 'Perfekt!', description: 'Få alla rätt på ett quiz', icon: '✨', earned: false },
+  { id: 'streak-14', title: 'Tvåveckorshjälte', description: '14 dagars streak', icon: '🌋', earned: false },
+  { id: 'streak-30', title: 'Månadsmästare', description: '30 dagars streak', icon: '🏅', earned: false },
   { id: 'flashcard-master', title: 'Kortmästaren', description: 'Bemästra alla kort i ett kapitel', icon: '🃏', earned: false },
+  { id: 'flashcard-all', title: 'Totalmästare', description: 'Bemästra alla kort i alla kapitel', icon: '🎓', earned: false },
 ];
 
 const defaultState: ProgressState = {
