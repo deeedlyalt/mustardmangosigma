@@ -5,17 +5,17 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider, useAuth } from "@/context/AuthContext";
 import { ProgressProvider } from "@/context/ProgressContext";
-import Index from "./pages/Index";
-import ChapterPage from "./pages/ChapterPage";
-import QuizPage from "./pages/QuizPage";
-import ConnectionsPage from "./pages/ConnectionsPage";
-import ProgressPage from "./pages/ProgressPage";
-import ExamTipsPage from "./pages/ExamTipsPage";
-import LeaderboardPage from "./pages/LeaderboardPage";
+import Index from "./pages/Index.tsx";
+import ChapterPage from "./pages/ChapterPage.tsx";
+import QuizPage from "./pages/QuizPage.tsx";
+import ConnectionsPage from "./pages/ConnectionsPage.tsx";
+import ProgressPage from "./pages/ProgressPage.tsx";
+import ExamTipsPage from "./pages/ProgressPage.tsx";
+import ExamTipsPage from "./pages/ExamTipsPage.tsx";
+import LeaderboardPage from "./pages/LeaderboardPage.tsx";
 import DuelPage from "./pages/DuelPage";
-import SearchPage from "./pages/SearchPage.tsx";
-import AuthPage from "./pages/AuthPage";
-import NotFound from "./pages/NotFound";
+import AuthPage from "./pages/AuthPage.tsx";
+import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
 
@@ -47,7 +47,7 @@ const ProtectedRoutes = () => {
         <Route path="/leaderboard" element={<LeaderboardPage />} />
         <Route path="/duel" element={<DuelPage />} />
         <Route path="/duel/:duelId" element={<DuelPage />} />
-        <Route path="/search" element={<SearchPage />} />
+        {/* <Route path="/search" element={<SearchPage />} /> */}
         <Route path="*" element={<NotFound />} />
       </Routes>
     </ProgressProvider>
