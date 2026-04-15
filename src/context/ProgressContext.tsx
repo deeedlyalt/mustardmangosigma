@@ -35,24 +35,44 @@ interface ProgressState {
 }
 
 const defaultBadges: Badge[] = [
+  // Quiz
   { id: 'first-quiz', title: 'Första quizet!', description: 'Klara ditt första quiz', icon: '🎯', earned: false },
   { id: 'quiz-5', title: 'Quizfantast', description: 'Klara 5 quiz', icon: '📝', earned: false },
+  { id: 'quiz-10', title: 'Quizveteran', description: 'Klara 10 quiz', icon: '📋', earned: false },
   { id: 'quiz-20', title: 'Quizmaskin', description: 'Klara 20 quiz', icon: '🤖', earned: false },
   { id: 'quiz-50', title: 'Quizlegend', description: 'Klara 50 quiz', icon: '👑', earned: false },
+  { id: 'quiz-100', title: 'Quizgudomlig', description: 'Klara 100 quiz', icon: '⚜️', earned: false },
+  // Perfekta quiz
   { id: 'perfect-quiz', title: 'Perfekt!', description: 'Få alla rätt på ett quiz', icon: '✨', earned: false },
-  { id: 'perfect-3', title: 'Trippel perfekt', description: 'Få 3 perfekta quiz', icon: '💎', earned: false },
+  { id: 'perfect-3', title: 'Trippel perfekt', description: '3 perfekta quiz', icon: '💎', earned: false },
+  { id: 'perfect-5', title: 'Femfaldig', description: '5 perfekta quiz', icon: '🌠', earned: false },
+  { id: 'perfect-10', title: 'Ofelbar', description: '10 perfekta quiz', icon: '🔮', earned: false },
+  // Kapitel & studier
+  { id: 'first-chapter', title: 'Första kapitlet', description: 'Studera ditt första kapitel', icon: '📖', earned: false },
+  { id: 'three-chapters', title: 'Halvvägs', description: 'Studera 3 kapitel', icon: '📚', earned: false },
   { id: 'all-chapters', title: 'Utforskaren', description: 'Studera alla 6 kapitel', icon: '🗺️', earned: false },
+  // XP
+  { id: 'xp-50', title: 'Första stegen', description: 'Samla 50 XP', icon: '👣', earned: false },
   { id: 'xp-100', title: 'Hundralansen', description: 'Samla 100 XP', icon: '💯', earned: false },
   { id: 'xp-250', title: 'Kvartsprofilen', description: 'Samla 250 XP', icon: '🎖️', earned: false },
   { id: 'xp-500', title: 'Halvtusen', description: 'Samla 500 XP', icon: '🌟', earned: false },
   { id: 'xp-1000', title: 'Tusentaktikern', description: 'Samla 1000 XP', icon: '🏆', earned: false },
   { id: 'xp-2000', title: 'Dubbeltusen', description: 'Samla 2000 XP', icon: '🚀', earned: false },
+  { id: 'xp-5000', title: 'Femtusen!', description: 'Samla 5000 XP', icon: '💫', earned: false },
+  // Streak
   { id: 'streak-3', title: 'Trestreak!', description: '3 dagars streak', icon: '🔥', earned: false },
   { id: 'streak-7', title: 'Veckokrigaren', description: '7 dagars streak', icon: '⚡', earned: false },
   { id: 'streak-14', title: 'Tvåveckorshjälte', description: '14 dagars streak', icon: '🌋', earned: false },
   { id: 'streak-30', title: 'Månadsmästare', description: '30 dagars streak', icon: '🏅', earned: false },
+  { id: 'streak-60', title: 'Tvåmånadslegend', description: '60 dagars streak', icon: '🌊', earned: false },
+  // Flashcards
   { id: 'flashcard-master', title: 'Kortmästaren', description: 'Bemästra alla kort i ett kapitel', icon: '🃏', earned: false },
+  { id: 'flashcard-3', title: 'Tre kapitel klara', description: 'Bemästra kort i 3 kapitel', icon: '🎴', earned: false },
   { id: 'flashcard-all', title: 'Totalmästare', description: 'Bemästra alla kort i alla kapitel', icon: '🎓', earned: false },
+  // Speciella
+  { id: 'night-owl', title: 'Nattuggle', description: 'Studera efter kl 22', icon: '🦉', earned: false },
+  { id: 'early-bird', title: 'Morgonpigg', description: 'Studera före kl 7', icon: '🐦', earned: false },
+  { id: 'comeback', title: 'Comeback!', description: 'Kom tillbaka efter 3+ dagar', icon: '💪', earned: false },
 ];
 
 const defaultState: ProgressState = {
@@ -126,7 +146,13 @@ export const ProgressProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           lastStudyDate: data.last_study_date,
           cardMastery: { ...defaultState.cardMastery, ...dbMastery },
           quizResults: (data.quiz_results as any) || [],
-          badges: (data.badges as any)?.length ? (data.badges as any) : defaultBadges,
+          badges: (() => {
+            const dbBadges = (data.badges as any) || [];
+            if (!dbBadges.length) return defaultBadges;
+            // Merge: keep earned status from DB, add any new badges
+            const dbMap = new Map(dbBadges.map((b: Badge) => [b.id, b]));
+            return defaultBadges.map(b => dbMap.has(b.id) ? { ...b, ...(dbMap.get(b.id) as Badge) } : b);
+          })(),
           chaptersStudied: (data.chapters_studied as any) || [],
         });
       }
@@ -161,36 +187,65 @@ export const ProgressProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       const b = badges.find(b => b.id === id);
       if (b && !b.earned) { b.earned = true; b.earnedDate = new Date().toISOString(); }
     };
+    // Quiz milestones
     if (s.quizResults.length >= 1) earn('first-quiz');
     if (s.quizResults.length >= 5) earn('quiz-5');
+    if (s.quizResults.length >= 10) earn('quiz-10');
     if (s.quizResults.length >= 20) earn('quiz-20');
     if (s.quizResults.length >= 50) earn('quiz-50');
+    if (s.quizResults.length >= 100) earn('quiz-100');
+    // Perfect quizzes
+    const perfectQuizzes = s.quizResults.filter(r => r.score === r.total && r.total > 0);
+    if (perfectQuizzes.length >= 1) earn('perfect-quiz');
+    if (perfectQuizzes.length >= 3) earn('perfect-3');
+    if (perfectQuizzes.length >= 5) earn('perfect-5');
+    if (perfectQuizzes.length >= 10) earn('perfect-10');
+    // Chapter milestones
+    if (s.chaptersStudied.length >= 1) earn('first-chapter');
+    if (s.chaptersStudied.length >= 3) earn('three-chapters');
     if (s.chaptersStudied.length >= 6) earn('all-chapters');
+    // XP milestones
+    if (s.xp >= 50) earn('xp-50');
     if (s.xp >= 100) earn('xp-100');
     if (s.xp >= 250) earn('xp-250');
     if (s.xp >= 500) earn('xp-500');
     if (s.xp >= 1000) earn('xp-1000');
     if (s.xp >= 2000) earn('xp-2000');
+    if (s.xp >= 5000) earn('xp-5000');
+    // Streak milestones
     if (s.streak >= 3) earn('streak-3');
     if (s.streak >= 7) earn('streak-7');
     if (s.streak >= 14) earn('streak-14');
     if (s.streak >= 30) earn('streak-30');
-    const perfectQuizzes = s.quizResults.filter(r => r.score === r.total && r.total > 0);
-    if (perfectQuizzes.length >= 1) earn('perfect-quiz');
-    if (perfectQuizzes.length >= 3) earn('perfect-3');
+    if (s.streak >= 60) earn('streak-60');
+    // Flashcard mastery
     const chapterIds: ChapterId[] = ['grundbiologi', 'ekologi', 'kroppen', 'nervsystemet', 'genetik', 'evolution'];
     let allChaptersMastered = true;
+    let chaptersWithMastery = 0;
     for (const ch of chapterIds) {
       const mastery = s.cardMastery?.[ch];
       if (!mastery) { allChaptersMastered = false; continue; }
       const values = Object.values(mastery);
       if (values.length >= 5 && values.every(v => v === 'mastered')) {
         earn('flashcard-master');
+        chaptersWithMastery++;
       } else {
         allChaptersMastered = false;
       }
     }
+    if (chaptersWithMastery >= 3) earn('flashcard-3');
     if (allChaptersMastered) earn('flashcard-all');
+    // Time-based badges
+    const hour = new Date().getHours();
+    if (hour >= 22 || hour < 5) earn('night-owl');
+    if (hour >= 5 && hour < 7) earn('early-bird');
+    // Comeback badge
+    if (s.lastStudyDate) {
+      const last = new Date(s.lastStudyDate);
+      const now = new Date();
+      const diffDays = Math.floor((now.getTime() - last.getTime()) / (1000 * 60 * 60 * 24));
+      if (diffDays >= 3 && s.streak === 1) earn('comeback');
+    }
     return { ...s, badges };
   }, []);
 
