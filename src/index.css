@@ -1,0 +1,111 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 45 30% 97%;
+    --foreground: 220 20% 15%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 220 20% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 20% 15%;
+
+    --primary: 145 60% 42%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 220 14% 94%;
+    --secondary-foreground: 220 20% 15%;
+
+    --muted: 220 14% 94%;
+    --muted-foreground: 220 10% 50%;
+
+    --accent: 45 90% 55%;
+    --accent-foreground: 220 20% 15%;
+
+    --destructive: 0 72% 55%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 14% 90%;
+    --input: 220 14% 90%;
+    --ring: 145 60% 42%;
+
+    --radius: 1rem;
+
+    /* Chapter colors */
+    --ch-grundbiologi: 145 60% 42%;
+    --ch-ekologi: 174 60% 40%;
+    --ch-kroppen: 5 75% 58%;
+    --ch-nervsystemet: 270 55% 55%;
+    --ch-genetik: 215 75% 50%;
+    --ch-evolution: 35 85% 52%;
+
+    /* Gamification */
+    --xp-gold: 45 90% 55%;
+    --streak-orange: 25 90% 55%;
+    --success: 145 60% 42%;
+    --error: 0 72% 55%;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-nunito;
+  }
+}
+
+@layer utilities {
+  .chapter-card-grundbiologi {
+    @apply bg-gradient-to-br from-emerald-400 to-emerald-600;
+  }
+  .chapter-card-ekologi {
+    @apply bg-gradient-to-br from-teal-400 to-teal-600;
+  }
+  .chapter-card-kroppen {
+    @apply bg-gradient-to-br from-rose-400 to-rose-600;
+  }
+  .chapter-card-nervsystemet {
+    @apply bg-gradient-to-br from-purple-400 to-purple-600;
+  }
+  .chapter-card-genetik {
+    @apply bg-gradient-to-br from-blue-400 to-blue-600;
+  }
+  .chapter-card-evolution {
+    @apply bg-gradient-to-br from-amber-400 to-amber-600;
+  }
+
+  .flashcard-flip {
+    perspective: 1000px;
+  }
+  .flashcard-inner {
+    transform-style: preserve-3d;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .flashcard-inner.flipped {
+    transform: rotateY(180deg);
+  }
+  .flashcard-front,
+  .flashcard-back {
+    backface-visibility: hidden;
+  }
+  .flashcard-back {
+    transform: rotateY(180deg);
+  }
+}
