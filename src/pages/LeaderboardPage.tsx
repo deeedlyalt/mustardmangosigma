@@ -165,7 +165,6 @@ const LeaderboardPage = () => {
             </div>
           )
         )}
-        )}
       </div>
       <BottomNav />
     </div>
