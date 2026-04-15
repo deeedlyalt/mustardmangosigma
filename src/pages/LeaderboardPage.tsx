@@ -97,47 +97,74 @@ const LeaderboardPage = () => {
             <Star size={16} /> XP
           </button>
           <button
-            onClick={() => setSortBy('streak')}
-            className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl font-bold text-sm transition-colors ${sortBy === 'streak' ? 'bg-primary text-primary-foreground shadow-md' : 'bg-card border border-border text-muted-foreground'}`}
+            onClick={() => setSortBy('duels')}
+            className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl font-bold text-sm transition-colors ${sortBy === 'duels' ? 'bg-primary text-primary-foreground shadow-md' : 'bg-card border border-border text-muted-foreground'}`}
           >
-            <Flame size={16} /> Streak
+            <Swords size={16} /> Dueller
           </button>
         </div>
 
         {loading ? (
           <div className="text-center py-10 text-muted-foreground">Laddar...</div>
-        ) : entries.length === 0 ? (
-          <div className="text-center py-10 text-muted-foreground">Inga spelare ännu. Var först!</div>
+        ) : sortBy === 'xp' ? (
+          entries.length === 0 ? (
+            <div className="text-center py-10 text-muted-foreground">Inga spelare ännu. Var först!</div>
+          ) : (
+            <div className="space-y-2">
+              {entries.map((entry, i) => {
+                const isMe = entry.user_id === user?.id;
+                return (
+                  <motion.div
+                    key={entry.user_id}
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: i * 0.03 }}
+                    className={`flex items-center gap-3 p-3 rounded-xl border shadow-sm ${isMe ? 'bg-primary/10 border-primary' : 'bg-card border-border'}`}
+                  >
+                    <div className="w-6 flex justify-center">{getRankIcon(i)}</div>
+                    <div className="flex-1 min-w-0">
+                      <p className={`text-sm font-bold truncate ${isMe ? 'text-primary' : 'text-foreground'}`}>
+                        {entry.display_name} {isMe && '(du)'}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-1 font-bold text-foreground text-sm">
+                      <Star size={14} className="text-xp" /> {entry.xp} XP
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
+          )
         ) : (
-          <div className="space-y-2">
-            {entries.map((entry, i) => {
-              const isMe = entry.user_id === user?.id;
-              return (
-                <motion.div
-                  key={entry.user_id}
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.03 }}
-                  className={`flex items-center gap-3 p-3 rounded-xl border shadow-sm ${isMe ? 'bg-primary/10 border-primary' : 'bg-card border-border'}`}
-                >
-                  <div className="w-6 flex justify-center">{getRankIcon(i)}</div>
-                  <div className="flex-1 min-w-0">
-                    <p className={`text-sm font-bold truncate ${isMe ? 'text-primary' : 'text-foreground'}`}>
-                      {entry.display_name} {isMe && '(du)'}
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-3 text-sm">
-                    <span className="flex items-center gap-1 font-bold text-foreground">
-                      <Star size={14} className="text-xp" /> {entry.xp}
-                    </span>
-                    <span className="flex items-center gap-1 font-bold text-foreground">
-                      <Flame size={14} className="text-streak" /> {entry.streak}
-                    </span>
-                  </div>
-                </motion.div>
-              );
-            })}
-          </div>
+          duelEntries.length === 0 ? (
+            <div className="text-center py-10 text-muted-foreground">Inga dueller avklarade ännu!</div>
+          ) : (
+            <div className="space-y-2">
+              {duelEntries.map((entry, i) => {
+                const isMe = entry.user_id === user?.id;
+                return (
+                  <motion.div
+                    key={entry.user_id}
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: i * 0.03 }}
+                    className={`flex items-center gap-3 p-3 rounded-xl border shadow-sm ${isMe ? 'bg-primary/10 border-primary' : 'bg-card border-border'}`}
+                  >
+                    <div className="w-6 flex justify-center">{getRankIcon(i)}</div>
+                    <div className="flex-1 min-w-0">
+                      <p className={`text-sm font-bold truncate ${isMe ? 'text-primary' : 'text-foreground'}`}>
+                        {entry.display_name} {isMe && '(du)'}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-1 font-bold text-foreground text-sm">
+                      <Swords size={14} className="text-primary" /> {entry.wins} vinster
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
+          )
+        )}
         )}
       </div>
       <BottomNav />
