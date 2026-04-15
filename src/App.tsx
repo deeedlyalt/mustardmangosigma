@@ -44,6 +44,7 @@ const ProtectedRoutes = () => {
         <Route path="/progress" element={<ProgressPage />} />
         <Route path="/tips" element={<ExamTipsPage />} />
         <Route path="/leaderboard" element={<LeaderboardPage />} />
+        <Route path="/search" element={<SearchPage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </ProgressProvider>
