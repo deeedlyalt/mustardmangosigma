@@ -4,9 +4,15 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/context/AuthContext';
 import PageHeader from '@/components/PageHeader';
 import BottomNav from '@/components/BottomNav';
-import { Star, Flame, Crown, Medal } from 'lucide-react';
+import { Star, Swords, Crown, Medal } from 'lucide-react';
 
-type SortBy = 'xp' | 'streak';
+type SortBy = 'xp' | 'duels';
+
+interface DuelWinEntry {
+  user_id: string;
+  display_name: string;
+  wins: number;
+}
 
 interface LeaderboardEntry {
   user_id: string;
@@ -21,15 +27,51 @@ const LeaderboardPage = () => {
   const [loading, setLoading] = useState(true);
   const { user } = useAuth();
 
+  const [duelEntries, setDuelEntries] = useState<DuelWinEntry[]>([]);
+
   useEffect(() => {
     const fetchLeaderboard = async () => {
       setLoading(true);
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('user_id, display_name, xp, streak')
-        .order(sortBy, { ascending: false })
-        .limit(50);
-      if (!error && data) setEntries(data);
+      if (sortBy === 'xp') {
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('user_id, display_name, xp, streak')
+          .order('xp', { ascending: false })
+          .limit(50);
+        if (!error && data) setEntries(data);
+      } else {
+        // Fetch duel wins
+        const { data: duels } = await supabase
+          .from('duels')
+          .select('winner_id')
+          .eq('status', 'completed')
+          .not('winner_id', 'is', null);
+
+        if (duels) {
+          const winMap = new Map<string, number>();
+          duels.forEach((d: any) => {
+            winMap.set(d.winner_id, (winMap.get(d.winner_id) || 0) + 1);
+          });
+
+          const userIds = Array.from(winMap.keys());
+          if (userIds.length > 0) {
+            const { data: profiles } = await supabase
+              .from('profiles')
+              .select('user_id, display_name')
+              .in('user_id', userIds);
+
+            const duelList: DuelWinEntry[] = (profiles || []).map((p: any) => ({
+              user_id: p.user_id,
+              display_name: p.display_name,
+              wins: winMap.get(p.user_id) || 0,
+            })).sort((a: DuelWinEntry, b: DuelWinEntry) => b.wins - a.wins);
+
+            setDuelEntries(duelList);
+          } else {
+            setDuelEntries([]);
+          }
+        }
+      }
       setLoading(false);
     };
     fetchLeaderboard();
