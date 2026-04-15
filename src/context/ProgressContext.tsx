@@ -181,36 +181,65 @@ export const ProgressProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       const b = badges.find(b => b.id === id);
       if (b && !b.earned) { b.earned = true; b.earnedDate = new Date().toISOString(); }
     };
+    // Quiz milestones
     if (s.quizResults.length >= 1) earn('first-quiz');
     if (s.quizResults.length >= 5) earn('quiz-5');
+    if (s.quizResults.length >= 10) earn('quiz-10');
     if (s.quizResults.length >= 20) earn('quiz-20');
     if (s.quizResults.length >= 50) earn('quiz-50');
+    if (s.quizResults.length >= 100) earn('quiz-100');
+    // Perfect quizzes
+    const perfectQuizzes = s.quizResults.filter(r => r.score === r.total && r.total > 0);
+    if (perfectQuizzes.length >= 1) earn('perfect-quiz');
+    if (perfectQuizzes.length >= 3) earn('perfect-3');
+    if (perfectQuizzes.length >= 5) earn('perfect-5');
+    if (perfectQuizzes.length >= 10) earn('perfect-10');
+    // Chapter milestones
+    if (s.chaptersStudied.length >= 1) earn('first-chapter');
+    if (s.chaptersStudied.length >= 3) earn('three-chapters');
     if (s.chaptersStudied.length >= 6) earn('all-chapters');
+    // XP milestones
+    if (s.xp >= 50) earn('xp-50');
     if (s.xp >= 100) earn('xp-100');
     if (s.xp >= 250) earn('xp-250');
     if (s.xp >= 500) earn('xp-500');
     if (s.xp >= 1000) earn('xp-1000');
     if (s.xp >= 2000) earn('xp-2000');
+    if (s.xp >= 5000) earn('xp-5000');
+    // Streak milestones
     if (s.streak >= 3) earn('streak-3');
     if (s.streak >= 7) earn('streak-7');
     if (s.streak >= 14) earn('streak-14');
     if (s.streak >= 30) earn('streak-30');
-    const perfectQuizzes = s.quizResults.filter(r => r.score === r.total && r.total > 0);
-    if (perfectQuizzes.length >= 1) earn('perfect-quiz');
-    if (perfectQuizzes.length >= 3) earn('perfect-3');
+    if (s.streak >= 60) earn('streak-60');
+    // Flashcard mastery
     const chapterIds: ChapterId[] = ['grundbiologi', 'ekologi', 'kroppen', 'nervsystemet', 'genetik', 'evolution'];
     let allChaptersMastered = true;
+    let chaptersWithMastery = 0;
     for (const ch of chapterIds) {
       const mastery = s.cardMastery?.[ch];
       if (!mastery) { allChaptersMastered = false; continue; }
       const values = Object.values(mastery);
       if (values.length >= 5 && values.every(v => v === 'mastered')) {
         earn('flashcard-master');
+        chaptersWithMastery++;
       } else {
         allChaptersMastered = false;
       }
     }
+    if (chaptersWithMastery >= 3) earn('flashcard-3');
     if (allChaptersMastered) earn('flashcard-all');
+    // Time-based badges
+    const hour = new Date().getHours();
+    if (hour >= 22 || hour < 5) earn('night-owl');
+    if (hour >= 5 && hour < 7) earn('early-bird');
+    // Comeback badge
+    if (s.lastStudyDate) {
+      const last = new Date(s.lastStudyDate);
+      const now = new Date();
+      const diffDays = Math.floor((now.getTime() - last.getTime()) / (1000 * 60 * 60 * 24));
+      if (diffDays >= 3 && s.streak === 1) earn('comeback');
+    }
     return { ...s, badges };
   }, []);
 
