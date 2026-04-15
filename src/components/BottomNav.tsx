@@ -1,10 +1,10 @@
 import { motion } from 'framer-motion';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Home, Trophy, Lightbulb, Link2, Medal } from 'lucide-react';
+import { Home, Trophy, Lightbulb, Search, Medal } from 'lucide-react';
 
 const navItems = [
   { path: '/', icon: Home, label: 'Hem' },
-  { path: '/connections', icon: Link2, label: 'Samband' },
+  { path: '/search', icon: Search, label: 'Sök' },
   { path: '/leaderboard', icon: Medal, label: 'Topplista' },
   { path: '/progress', icon: Trophy, label: 'Framsteg' },
   { path: '/tips', icon: Lightbulb, label: 'Tips' },

@@ -12,6 +12,7 @@ import ConnectionsPage from "./pages/ConnectionsPage";
 import ProgressPage from "./pages/ProgressPage";
 import ExamTipsPage from "./pages/ExamTipsPage";
 import LeaderboardPage from "./pages/LeaderboardPage";
+import SearchPage from "./pages/SearchPage";
 import AuthPage from "./pages/AuthPage";
 import NotFound from "./pages/NotFound";
 

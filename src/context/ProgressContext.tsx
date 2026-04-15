@@ -35,24 +35,44 @@ interface ProgressState {
 }
 
 const defaultBadges: Badge[] = [
+  // Quiz
   { id: 'first-quiz', title: 'Första quizet!', description: 'Klara ditt första quiz', icon: '🎯', earned: false },
   { id: 'quiz-5', title: 'Quizfantast', description: 'Klara 5 quiz', icon: '📝', earned: false },
+  { id: 'quiz-10', title: 'Quizveteran', description: 'Klara 10 quiz', icon: '📋', earned: false },
   { id: 'quiz-20', title: 'Quizmaskin', description: 'Klara 20 quiz', icon: '🤖', earned: false },
   { id: 'quiz-50', title: 'Quizlegend', description: 'Klara 50 quiz', icon: '👑', earned: false },
+  { id: 'quiz-100', title: 'Quizgudomlig', description: 'Klara 100 quiz', icon: '⚜️', earned: false },
+  // Perfekta quiz
   { id: 'perfect-quiz', title: 'Perfekt!', description: 'Få alla rätt på ett quiz', icon: '✨', earned: false },
-  { id: 'perfect-3', title: 'Trippel perfekt', description: 'Få 3 perfekta quiz', icon: '💎', earned: false },
+  { id: 'perfect-3', title: 'Trippel perfekt', description: '3 perfekta quiz', icon: '💎', earned: false },
+  { id: 'perfect-5', title: 'Femfaldig', description: '5 perfekta quiz', icon: '🌠', earned: false },
+  { id: 'perfect-10', title: 'Ofelbar', description: '10 perfekta quiz', icon: '🔮', earned: false },
+  // Kapitel & studier
+  { id: 'first-chapter', title: 'Första kapitlet', description: 'Studera ditt första kapitel', icon: '📖', earned: false },
+  { id: 'three-chapters', title: 'Halvvägs', description: 'Studera 3 kapitel', icon: '📚', earned: false },
   { id: 'all-chapters', title: 'Utforskaren', description: 'Studera alla 6 kapitel', icon: '🗺️', earned: false },
+  // XP
+  { id: 'xp-50', title: 'Första stegen', description: 'Samla 50 XP', icon: '👣', earned: false },
   { id: 'xp-100', title: 'Hundralansen', description: 'Samla 100 XP', icon: '💯', earned: false },
   { id: 'xp-250', title: 'Kvartsprofilen', description: 'Samla 250 XP', icon: '🎖️', earned: false },
   { id: 'xp-500', title: 'Halvtusen', description: 'Samla 500 XP', icon: '🌟', earned: false },
   { id: 'xp-1000', title: 'Tusentaktikern', description: 'Samla 1000 XP', icon: '🏆', earned: false },
   { id: 'xp-2000', title: 'Dubbeltusen', description: 'Samla 2000 XP', icon: '🚀', earned: false },
+  { id: 'xp-5000', title: 'Femtusen!', description: 'Samla 5000 XP', icon: '💫', earned: false },
+  // Streak
   { id: 'streak-3', title: 'Trestreak!', description: '3 dagars streak', icon: '🔥', earned: false },
   { id: 'streak-7', title: 'Veckokrigaren', description: '7 dagars streak', icon: '⚡', earned: false },
   { id: 'streak-14', title: 'Tvåveckorshjälte', description: '14 dagars streak', icon: '🌋', earned: false },
   { id: 'streak-30', title: 'Månadsmästare', description: '30 dagars streak', icon: '🏅', earned: false },
+  { id: 'streak-60', title: 'Tvåmånadslegend', description: '60 dagars streak', icon: '🌊', earned: false },
+  // Flashcards
   { id: 'flashcard-master', title: 'Kortmästaren', description: 'Bemästra alla kort i ett kapitel', icon: '🃏', earned: false },
+  { id: 'flashcard-3', title: 'Tre kapitel klara', description: 'Bemästra kort i 3 kapitel', icon: '🎴', earned: false },
   { id: 'flashcard-all', title: 'Totalmästare', description: 'Bemästra alla kort i alla kapitel', icon: '🎓', earned: false },
+  // Speciella
+  { id: 'night-owl', title: 'Nattuggle', description: 'Studera efter kl 22', icon: '🦉', earned: false },
+  { id: 'early-bird', title: 'Morgonpigg', description: 'Studera före kl 7', icon: '🐦', earned: false },
+  { id: 'comeback', title: 'Comeback!', description: 'Kom tillbaka efter 3+ dagar', icon: '💪', earned: false },
 ];
 
 const defaultState: ProgressState = {
