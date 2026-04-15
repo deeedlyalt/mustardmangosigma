@@ -14,6 +14,51 @@ export type Database = {
   }
   public: {
     Tables: {
+      duels: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          creator_id: string
+          creator_score: number | null
+          creator_time_ms: number | null
+          id: string
+          opponent_id: string | null
+          opponent_score: number | null
+          opponent_time_ms: number | null
+          questions: Json
+          status: string
+          winner_id: string | null
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          creator_id: string
+          creator_score?: number | null
+          creator_time_ms?: number | null
+          id?: string
+          opponent_id?: string | null
+          opponent_score?: number | null
+          opponent_time_ms?: number | null
+          questions?: Json
+          status?: string
+          winner_id?: string | null
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          creator_id?: string
+          creator_score?: number | null
+          creator_time_ms?: number | null
+          id?: string
+          opponent_id?: string | null
+          opponent_score?: number | null
+          opponent_time_ms?: number | null
+          questions?: Json
+          status?: string
+          winner_id?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           badges: Json
