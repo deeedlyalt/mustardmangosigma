@@ -12,8 +12,8 @@ import ConnectionsPage from "./pages/ConnectionsPage";
 import ProgressPage from "./pages/ProgressPage";
 import ExamTipsPage from "./pages/ExamTipsPage";
 import LeaderboardPage from "./pages/LeaderboardPage";
-import DuelPage from "./pages/DuelPage.tsx";
-import SearchPage from "./pages/SearchPage";
+import DuelPage from "./pages/DuelPage";
+import SearchPage from "./pages/SearchPage.tsx";
 import AuthPage from "./pages/AuthPage";
 import NotFound from "./pages/NotFound";
 
