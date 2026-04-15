@@ -146,7 +146,13 @@ export const ProgressProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           lastStudyDate: data.last_study_date,
           cardMastery: { ...defaultState.cardMastery, ...dbMastery },
           quizResults: (data.quiz_results as any) || [],
-          badges: (data.badges as any)?.length ? (data.badges as any) : defaultBadges,
+          badges: (() => {
+            const dbBadges = (data.badges as any) || [];
+            if (!dbBadges.length) return defaultBadges;
+            // Merge: keep earned status from DB, add any new badges
+            const dbMap = new Map(dbBadges.map((b: Badge) => [b.id, b]));
+            return defaultBadges.map(b => dbMap.has(b.id) ? { ...b, ...(dbMap.get(b.id) as Badge) } : b);
+          })(),
           chaptersStudied: (data.chapters_studied as any) || [],
         });
       }
