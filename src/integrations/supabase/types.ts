@@ -14,6 +14,51 @@ export type Database = {
   }
   public: {
     Tables: {
+      duels: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          creator_id: string
+          creator_score: number | null
+          creator_time_ms: number | null
+          id: string
+          opponent_id: string | null
+          opponent_score: number | null
+          opponent_time_ms: number | null
+          questions: Json
+          status: string
+          winner_id: string | null
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          creator_id: string
+          creator_score?: number | null
+          creator_time_ms?: number | null
+          id?: string
+          opponent_id?: string | null
+          opponent_score?: number | null
+          opponent_time_ms?: number | null
+          questions?: Json
+          status?: string
+          winner_id?: string | null
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          creator_id?: string
+          creator_score?: number | null
+          creator_time_ms?: number | null
+          id?: string
+          opponent_id?: string | null
+          opponent_score?: number | null
+          opponent_time_ms?: number | null
+          questions?: Json
+          status?: string
+          winner_id?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           badges: Json
@@ -56,54 +101,6 @@ export type Database = {
           updated_at?: string
           user_id?: string
           xp?: number
-        }
-        Relationships: []
-      }
-      duels: {
-        Row: {
-          id: string
-          creator_id: string
-          opponent_id: string | null
-          creator_score: number | null
-          opponent_score: number | null
-          creator_time_ms: number | null
-          opponent_time_ms: number | null
-          questions: Json
-          status: string
-          winner_id: string | null
-          completed_at: string | null
-          created_at: string
-          updated_at: string
-        }
-        Insert: {
-          id?: string
-          creator_id: string
-          opponent_id?: string | null
-          creator_score?: number | null
-          opponent_score?: number | null
-          creator_time_ms?: number | null
-          opponent_time_ms?: number | null
-          questions: Json
-          status: string
-          winner_id?: string | null
-          completed_at?: string | null
-          created_at?: string
-          updated_at?: string
-        }
-        Update: {
-          id?: string
-          creator_id?: string
-          opponent_id?: string | null
-          creator_score?: number | null
-          opponent_score?: number | null
-          creator_time_ms?: number | null
-          opponent_time_ms?: number | null
-          questions?: Json
-          status?: string
-          winner_id?: string | null
-          completed_at?: string | null
-          created_at?: string
-          updated_at?: string
         }
         Relationships: []
       }

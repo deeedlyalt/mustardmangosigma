@@ -5,8 +5,8 @@ import { useAuth } from '@/context/AuthContext';
 import PageHeader from '../components/PageHeader';
 import BottomNav from '../components/BottomNav';
 import DuelLobby from '../components/DuelLobby';
-// import DuelGame from '../components/DuelGame';
-// import DuelResult from '../components/DuelResult';
+import DuelGame from '../components/DuelGame';
+import DuelResult from '../components/DuelResult';
 
 const DuelPage = () => {
   const { duelId } = useParams<{ duelId: string }>();
@@ -76,8 +76,7 @@ const DuelPage = () => {
       <div className="min-h-screen bg-background pb-20">
         <div className="container max-w-2xl py-6 px-4">
           <PageHeader title="Duellresultat" icon="⚔️" />
-          {/* <DuelResult duel={duel} userId={user?.id || ''} /> */}
-          <p>Duel completed</p>
+          <DuelResult duel={duel} userId={user?.id || ''} />
         </div>
         <BottomNav />
       </div>
@@ -141,8 +140,7 @@ const DuelPage = () => {
     <div className="min-h-screen bg-background pb-20">
       <div className="container max-w-2xl py-6 px-4">
         <PageHeader title="Duell ⚔️" />
-        {/* <DuelGame duel={duel} userId={user?.id || ''} /> */}
-        <p>Duel game</p>
+        <DuelGame duel={duel} userId={user?.id || ''} />
       </div>
       <BottomNav />
     </div>
