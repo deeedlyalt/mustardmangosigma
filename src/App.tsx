@@ -10,7 +10,6 @@ import ChapterPage from "./pages/ChapterPage.tsx";
 import QuizPage from "./pages/QuizPage.tsx";
 import ConnectionsPage from "./pages/ConnectionsPage.tsx";
 import ProgressPage from "./pages/ProgressPage.tsx";
-import ExamTipsPage from "./pages/ProgressPage.tsx";
 import ExamTipsPage from "./pages/ExamTipsPage.tsx";
 import LeaderboardPage from "./pages/LeaderboardPage.tsx";
 import DuelPage from "./pages/DuelPage";

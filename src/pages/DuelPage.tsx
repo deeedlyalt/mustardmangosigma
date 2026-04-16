@@ -5,8 +5,8 @@ import { useAuth } from '@/context/AuthContext';
 import PageHeader from '../components/PageHeader';
 import BottomNav from '../components/BottomNav';
 import DuelLobby from '../components/DuelLobby';
-// import DuelGame from '../components/DuelGame';
-// import DuelResult from '../components/DuelResult';
+import DuelGame from '../components/DuelGame';
+import DuelResult from '../components/DuelResult';
 
 const DuelPage = () => {
   const { duelId } = useParams<{ duelId: string }>();
