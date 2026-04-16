@@ -61,13 +61,17 @@ export type Database = {
       }
       profiles: {
         Row: {
+          active_boosts: Json
           badges: Json
           card_mastery: Json
           chapters_studied: Json
+          coins: number
           created_at: string
           display_name: string
+          equipped_banner: string | null
           id: string
           last_study_date: string | null
+          owned_items: Json
           quiz_results: Json
           streak: number
           updated_at: string
@@ -75,13 +79,17 @@ export type Database = {
           xp: number
         }
         Insert: {
+          active_boosts?: Json
           badges?: Json
           card_mastery?: Json
           chapters_studied?: Json
+          coins?: number
           created_at?: string
           display_name?: string
+          equipped_banner?: string | null
           id?: string
           last_study_date?: string | null
+          owned_items?: Json
           quiz_results?: Json
           streak?: number
           updated_at?: string
@@ -89,13 +97,17 @@ export type Database = {
           xp?: number
         }
         Update: {
+          active_boosts?: Json
           badges?: Json
           card_mastery?: Json
           chapters_studied?: Json
+          coins?: number
           created_at?: string
           display_name?: string
+          equipped_banner?: string | null
           id?: string
           last_study_date?: string | null
+          owned_items?: Json
           quiz_results?: Json
           streak?: number
           updated_at?: string
