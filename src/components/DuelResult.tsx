@@ -2,8 +2,9 @@ import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
+import { useProgress } from '@/context/ProgressContext';
 import confetti from 'canvas-confetti';
-import { Trophy, Clock, Swords } from 'lucide-react';
+import { Trophy, Clock, Swords, Coins } from 'lucide-react';
 
 interface DuelResultProps {
   duel: any;
@@ -12,6 +13,7 @@ interface DuelResultProps {
 
 const DuelResult = ({ duel, userId }: DuelResultProps) => {
   const navigate = useNavigate();
+  const { addCoins } = useProgress();
   const isCreator = duel.creator_id === userId;
   const myScore = isCreator ? duel.creator_score : duel.opponent_score;
   const opponentScore = isCreator ? duel.opponent_score : duel.creator_score;
@@ -21,6 +23,7 @@ const DuelResult = ({ duel, userId }: DuelResultProps) => {
   const isDraw = duel.winner_id === null;
 
   const [opponentName, setOpponentName] = useState('Motståndare');
+  const [coinsAwarded, setCoinsAwarded] = useState(false);
 
   useEffect(() => {
     const opponentId = isCreator ? duel.opponent_id : duel.creator_id;
@@ -32,8 +35,12 @@ const DuelResult = ({ duel, userId }: DuelResultProps) => {
   }, [duel, isCreator]);
 
   useEffect(() => {
-    if (iWon) confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 } });
-  }, [iWon]);
+    if (iWon && !coinsAwarded) {
+      confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 } });
+      addCoins(100);
+      setCoinsAwarded(true);
+    }
+  }, [iWon, coinsAwarded, addCoins]);
 
   const formatTime = (ms: number) => {
     const s = Math.floor(ms / 1000);
@@ -51,7 +58,19 @@ const DuelResult = ({ duel, userId }: DuelResultProps) => {
       <h2 className="text-2xl font-extrabold text-foreground mb-1">
         {iWon ? 'Du vann!' : isDraw ? 'Oavgjort!' : 'Du förlorade!'}
       </h2>
-      <p className="text-muted-foreground mb-6">mot {opponentName}</p>
+      <p className="text-muted-foreground mb-2">mot {opponentName}</p>
+
+      {iWon && (
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="inline-flex items-center gap-2 px-4 py-2 bg-yellow-400/20 border border-yellow-400/30 rounded-full mb-4"
+        >
+          <Coins size={18} className="text-yellow-500" />
+          <span className="font-bold text-foreground">+100 coins!</span>
+        </motion.div>
+      )}
 
       <div className="grid grid-cols-2 gap-4 mb-6">
         <div className={`p-4 rounded-2xl border-2 ${iWon ? 'border-primary bg-primary/10' : 'border-border bg-card'}`}>
