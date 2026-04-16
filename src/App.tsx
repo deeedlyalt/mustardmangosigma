@@ -13,6 +13,8 @@ import ProgressPage from "./pages/ProgressPage.tsx";
 import ExamTipsPage from "./pages/ExamTipsPage.tsx";
 import LeaderboardPage from "./pages/LeaderboardPage.tsx";
 import DuelPage from "./pages/DuelPage";
+import ShopPage from "./pages/ShopPage";
+import HardModePage from "./pages/HardModePage";
 import AuthPage from "./pages/AuthPage.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
@@ -46,7 +48,8 @@ const ProtectedRoutes = () => {
         <Route path="/leaderboard" element={<LeaderboardPage />} />
         <Route path="/duel" element={<DuelPage />} />
         <Route path="/duel/:duelId" element={<DuelPage />} />
-        {/* <Route path="/search" element={<SearchPage />} /> */}
+        <Route path="/shop" element={<ShopPage />} />
+        <Route path="/hard-mode" element={<HardModePage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </ProgressProvider>
