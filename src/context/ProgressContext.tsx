@@ -24,14 +24,23 @@ interface Badge {
   earnedDate?: string;
 }
 
+export interface ActiveBoost {
+  type: 'double-xp';
+  expiresAt: string; // ISO date string
+}
+
 interface ProgressState {
   xp: number;
   streak: number;
+  coins: number;
   lastStudyDate: string | null;
   cardMastery: Record<ChapterId, CardMastery>;
   quizResults: QuizResult[];
   badges: Badge[];
   chaptersStudied: ChapterId[];
+  activeBoosts: ActiveBoost[];
+  ownedItems: string[]; // item IDs
+  equippedBanner: string | null;
 }
 
 const defaultBadges: Badge[] = [
@@ -58,6 +67,7 @@ const defaultBadges: Badge[] = [
 const defaultState: ProgressState = {
   xp: 0,
   streak: 0,
+  coins: 0,
   lastStudyDate: null,
   cardMastery: {
     grundbiologi: {},
@@ -70,16 +80,27 @@ const defaultState: ProgressState = {
   quizResults: [],
   badges: defaultBadges,
   chaptersStudied: [],
+  activeBoosts: [],
+  ownedItems: [],
+  equippedBanner: null,
 };
 
 interface ProgressContextType extends ProgressState {
   addXp: (amount: number) => void;
+  addCoins: (amount: number) => void;
+  spendCoins: (amount: number) => boolean;
   setCardMastery: (chapterId: ChapterId, cardId: string, status: 'mastered' | 'review') => void;
   addQuizResult: (result: Omit<QuizResult, 'date'>) => void;
   markChapterStudied: (chapterId: ChapterId) => void;
   getChapterMastery: (chapterId: ChapterId) => number;
   getLevel: () => { name: string; level: number; nextXp: number; icon: string };
   updateStreak: () => void;
+  activateBoost: (type: 'double-xp', durationMinutes: number) => void;
+  getXpMultiplier: () => number;
+  hasActiveBoost: (type: 'double-xp') => boolean;
+  purchaseItem: (itemId: string) => void;
+  ownsItem: (itemId: string) => boolean;
+  equipBanner: (bannerId: string | null) => void;
   loaded: boolean;
 }
 
@@ -105,7 +126,6 @@ export const ProgressProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const [loaded, setLoaded] = useState(false);
   const saveTimeout = useRef<ReturnType<typeof setTimeout>>();
 
-  // Load from Supabase when user changes
   useEffect(() => {
     if (!user) {
       setState(defaultState);
@@ -123,11 +143,15 @@ export const ProgressProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         setState({
           xp: data.xp,
           streak: data.streak,
+          coins: (data as any).coins || 0,
           lastStudyDate: data.last_study_date,
           cardMastery: { ...defaultState.cardMastery, ...dbMastery },
           quizResults: (data.quiz_results as any) || [],
           badges: (data.badges as any)?.length ? (data.badges as any) : defaultBadges,
           chaptersStudied: (data.chapters_studied as any) || [],
+          activeBoosts: (data as any).active_boosts || [],
+          ownedItems: (data as any).owned_items || [],
+          equippedBanner: (data as any).equipped_banner || null,
         });
       }
       setLoaded(true);
@@ -135,7 +159,6 @@ export const ProgressProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     load();
   }, [user]);
 
-  // Save to Supabase (debounced)
   const saveToDb = useCallback((s: ProgressState) => {
     if (!user) return;
     if (saveTimeout.current) clearTimeout(saveTimeout.current);
@@ -145,12 +168,16 @@ export const ProgressProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         .update({
           xp: s.xp,
           streak: s.streak,
+          coins: s.coins,
           last_study_date: s.lastStudyDate,
           card_mastery: s.cardMastery as any,
           quiz_results: s.quizResults as any,
           badges: s.badges as any,
           chapters_studied: s.chaptersStudied as any,
-        })
+          active_boosts: s.activeBoosts as any,
+          owned_items: s.ownedItems as any,
+          equipped_banner: s.equippedBanner,
+        } as any)
         .eq('user_id', user.id);
     }, 500);
   }, [user]);
@@ -202,7 +229,60 @@ export const ProgressProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     });
   }, [saveToDb]);
 
-  const addXp = (amount: number) => updateAndSave(s => checkBadges({ ...s, xp: s.xp + amount }));
+  const getActiveBoosts = (boosts: ActiveBoost[]): ActiveBoost[] => {
+    const now = new Date().toISOString();
+    return boosts.filter(b => b.expiresAt > now);
+  };
+
+  const getXpMultiplier = (): number => {
+    const active = getActiveBoosts(state.activeBoosts);
+    const hasShopBoost = active.some(b => b.type === 'double-xp');
+    return hasShopBoost ? 2 : 1;
+  };
+
+  const hasActiveBoost = (type: 'double-xp'): boolean => {
+    return getActiveBoosts(state.activeBoosts).some(b => b.type === type);
+  };
+
+  const addXp = (amount: number) => updateAndSave(s => {
+    const multiplier = getActiveBoosts(s.activeBoosts).some(b => b.type === 'double-xp') ? 2 : 1;
+    return checkBadges({ ...s, xp: s.xp + amount * multiplier });
+  });
+
+  const addCoins = (amount: number) => updateAndSave(s => ({ ...s, coins: s.coins + amount }));
+
+  const spendCoins = (amount: number): boolean => {
+    let success = false;
+    updateAndSave(s => {
+      if (s.coins >= amount) {
+        success = true;
+        return { ...s, coins: s.coins - amount };
+      }
+      return s;
+    });
+    return success;
+  };
+
+  const activateBoost = (type: 'double-xp', durationMinutes: number) => {
+    updateAndSave(s => {
+      const expiresAt = new Date(Date.now() + durationMinutes * 60 * 1000).toISOString();
+      const cleaned = getActiveBoosts(s.activeBoosts);
+      return { ...s, activeBoosts: [...cleaned, { type, expiresAt }] };
+    });
+  };
+
+  const purchaseItem = (itemId: string) => {
+    updateAndSave(s => {
+      if (s.ownedItems.includes(itemId)) return s;
+      return { ...s, ownedItems: [...s.ownedItems, itemId] };
+    });
+  };
+
+  const ownsItem = (itemId: string): boolean => state.ownedItems.includes(itemId);
+
+  const equipBanner = (bannerId: string | null) => {
+    updateAndSave(s => ({ ...s, equippedBanner: bannerId }));
+  };
 
   const setCardMastery = (chapterId: ChapterId, cardId: string, status: 'mastered' | 'review') => {
     updateAndSave(s => {
@@ -214,7 +294,8 @@ export const ProgressProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const addQuizResult = (result: Omit<QuizResult, 'date'>) => {
     updateAndSave(s => {
       const newResult = { ...result, date: new Date().toISOString() };
-      return checkBadges({ ...s, quizResults: [...s.quizResults, newResult], xp: s.xp + result.xpEarned });
+      const multiplier = getActiveBoosts(s.activeBoosts).some(b => b.type === 'double-xp') ? 2 : 1;
+      return checkBadges({ ...s, quizResults: [...s.quizResults, newResult], xp: s.xp + result.xpEarned * multiplier });
     });
   };
 
@@ -257,7 +338,15 @@ export const ProgressProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   };
 
   return (
-    <ProgressContext.Provider value={{ ...state, addXp, setCardMastery, addQuizResult, markChapterStudied, getChapterMastery, getLevel, updateStreak, loaded }}>
+    <ProgressContext.Provider value={{
+      ...state,
+      addXp, addCoins, spendCoins,
+      setCardMastery, addQuizResult, markChapterStudied,
+      getChapterMastery, getLevel, updateStreak,
+      activateBoost, getXpMultiplier, hasActiveBoost,
+      purchaseItem, ownsItem, equipBanner,
+      loaded,
+    }}>
       {children}
     </ProgressContext.Provider>
   );
