@@ -19,7 +19,9 @@ const QuizPage = () => {
     }
     const chapter = getChapter(chapterId as ChapterId);
     if (!chapter) return [];
-    return [...chapter.questions].sort(() => Math.random() - 0.5);
+    return [...chapter.questions]
+  .sort(() => Math.random() - 0.5)
+  .slice(0, 10);
   }, [chapterId, isMixed]);
 
   const chapter = !isMixed ? getChapter(chapterId as ChapterId) : null;
