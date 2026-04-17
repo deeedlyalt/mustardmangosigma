@@ -11,18 +11,21 @@ const QuizPage = () => {
 
   const isMixed = chapterId === 'mixed';
 
-  const questions = useMemo(() => {
-    if (isMixed) {
-      const all = chapters.flatMap(c => c.questions);
-      const shuffled = [...all].sort(() => Math.random() - 0.5);
-      return shuffled.slice(0, 10);
-    }
-    const chapter = getChapter(chapterId as ChapterId);
-    if (!chapter) return [];
-    return [...chapter.questions]
-  .sort(() => Math.random() - 0.5)
-  .slice(0, 10);
-  }, [chapterId, isMixed]);
+ const questions = useMemo(() => {
+  if (isMixed) {
+    const all = chapters.flatMap(c => c.questions);
+    const shuffled = [...all].sort(() => Math.random() - 0.5);
+    return shuffled.slice(0, 10);
+  }
+
+  const chapter = getChapter(chapterId as ChapterId);
+  if (!chapter) return [];
+
+  return [...chapter.questions]
+    .sort(() => Math.random() - 0.5)
+    .slice(0, 10); // 👈 här är fixen
+
+}, [chapterId, isMixed]);
 
   const chapter = !isMixed ? getChapter(chapterId as ChapterId) : null;
 
