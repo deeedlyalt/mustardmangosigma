@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { supabase } from '@/integrations/supabase/client';
 import { QuizQuestion } from '@/data/chapters';
-import { ArrowRight, Eye, Check } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
 interface DuelGameProps {
   duel: any;
@@ -17,7 +17,6 @@ const DuelGame = ({ duel, userId }: DuelGameProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [showAnswer, setShowAnswer] = useState(false);
-  const [selfAssessed, setSelfAssessed] = useState<boolean | null>(null);
   const [correctCount, setCorrectCount] = useState(0);
 
   const current = questions[currentIndex];
