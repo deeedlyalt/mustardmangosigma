@@ -98,20 +98,32 @@ const LeaderboardPage = () => {
 
   const renderEntry = (userId: string, displayName: string, equippedBanner: string | null, isMe: boolean, rightContent: React.ReactNode, index: number) => {
     const gradient = getBannerGradient(equippedBanner);
+    const banner = equippedBanner ? bannerItems.find(b => b.id === equippedBanner) : null;
     return (
       <motion.div
         key={userId}
         initial={{ opacity: 0, x: -10 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ delay: index * 0.03 }}
-        className={`relative flex items-center gap-3 p-3 rounded-xl border shadow-sm overflow-hidden ${isMe ? 'border-primary bg-primary/10' : 'bg-card border-border'}`}
+        className={`relative flex items-center gap-3 p-3 rounded-xl border-2 shadow-sm overflow-hidden ${
+          gradient
+            ? 'border-transparent shadow-lg ring-2 ring-offset-2 ring-offset-background ring-foreground/10'
+            : isMe
+              ? 'border-primary bg-primary/10'
+              : 'bg-card border-border'
+        }`}
+        style={gradient ? { boxShadow: '0 4px 20px -4px hsl(var(--foreground) / 0.2)' } : undefined}
       >
         {gradient && (
-          <div className={`absolute inset-0 bg-gradient-to-r ${gradient} opacity-10`} />
+          <>
+            <div className={`absolute inset-0 bg-gradient-to-r ${gradient} opacity-40`} />
+            <div className="absolute inset-0 bg-gradient-to-t from-background/70 via-background/20 to-transparent" />
+          </>
         )}
         <div className="relative w-6 flex justify-center">{getRankIcon(index)}</div>
-        <div className="relative flex-1 min-w-0">
-          <p className={`text-sm font-bold truncate ${isMe ? 'text-primary' : 'text-foreground'}`}>
+        <div className="relative flex-1 min-w-0 flex items-center gap-2">
+          {banner && <span className="text-xl drop-shadow-md">{banner.emoji}</span>}
+          <p className={`text-sm font-bold truncate ${isMe ? 'text-primary' : 'text-foreground'} ${gradient ? 'drop-shadow-sm' : ''}`}>
             {displayName} {isMe && '(du)'}
           </p>
         </div>

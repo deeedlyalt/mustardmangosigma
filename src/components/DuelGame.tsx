@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { supabase } from '@/integrations/supabase/client';
 import { QuizQuestion } from '@/data/chapters';
-import { ArrowRight, Eye, Check } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
 interface DuelGameProps {
   duel: any;
@@ -17,7 +17,6 @@ const DuelGame = ({ duel, userId }: DuelGameProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [showAnswer, setShowAnswer] = useState(false);
-  const [selfAssessed, setSelfAssessed] = useState<boolean | null>(null);
   const [correctCount, setCorrectCount] = useState(0);
 
   const current = questions[currentIndex];
@@ -30,9 +29,7 @@ const DuelGame = ({ duel, userId }: DuelGameProps) => {
   };
 
   const handleNext = async () => {
-    const isCorrect = current.type === 'multiple-choice'
-      ? selectedAnswer === current.correctAnswer
-      : selfAssessed === true;
+    const isCorrect = selectedAnswer === current.correctAnswer;
 
     const newCorrect = correctCount + (isCorrect ? 1 : 0);
     if (isCorrect) setCorrectCount(newCorrect);
@@ -71,7 +68,6 @@ const DuelGame = ({ duel, userId }: DuelGameProps) => {
       setCurrentIndex(prev => prev + 1);
       setSelectedAnswer(null);
       setShowAnswer(false);
-      setSelfAssessed(null);
     }
   };
 
@@ -104,13 +100,13 @@ const DuelGame = ({ duel, userId }: DuelGameProps) => {
               ⚔️ Duell
             </span>
             <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-muted text-muted-foreground">
-              {current.type === 'multiple-choice' ? 'Flerval' : 'Öppen fråga'}
+              Flerval
             </span>
           </div>
 
           <h3 className="text-lg font-bold text-foreground mb-5">{current.question}</h3>
 
-          {current.type === 'multiple-choice' && current.options && (
+          {current.options && (
             <div className="space-y-3">
               {current.options.map((opt) => {
                 let optionClass = 'bg-muted hover:bg-muted/80 text-foreground border-transparent';
@@ -134,45 +130,13 @@ const DuelGame = ({ duel, userId }: DuelGameProps) => {
             </div>
           )}
 
-          {current.type === 'open-ended' && (
-            <div>
-              {!showAnswer ? (
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => setShowAnswer(true)}
-                  className="flex items-center gap-2 px-5 py-3 bg-accent text-accent-foreground rounded-xl font-semibold border border-border"
-                >
-                  <Eye size={18} /> Visa modellsvar
-                </motion.button>
-              ) : (
-                <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
-                  <div className="bg-muted rounded-xl p-4 mb-4 border border-border">
-                    <p className="text-sm font-semibold text-muted-foreground mb-1">Modellsvar:</p>
-                    <p className="text-foreground">{current.correctAnswer}</p>
-                  </div>
-                  {selfAssessed === null && (
-                    <div className="flex gap-3">
-                      <motion.button whileTap={{ scale: 0.95 }} onClick={() => setSelfAssessed(true)} className="flex items-center gap-2 px-4 py-2 bg-success text-primary-foreground rounded-xl font-semibold">
-                        <Check size={16} /> Rätt
-                      </motion.button>
-                      <motion.button whileTap={{ scale: 0.95 }} onClick={() => setSelfAssessed(false)} className="flex items-center gap-2 px-4 py-2 bg-destructive text-destructive-foreground rounded-xl font-semibold">
-                        Fel
-                      </motion.button>
-                    </div>
-                  )}
-                </motion.div>
-              )}
-            </div>
-          )}
-
           {showAnswer && current.explanation && (
             <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-sm text-muted-foreground mt-3 italic">
               💡 {current.explanation}
             </motion.p>
           )}
 
-          {((current.type === 'multiple-choice' && showAnswer) || (current.type === 'open-ended' && selfAssessed !== null)) && (
+          {showAnswer && (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mt-5 flex justify-end">
               <motion.button
                 whileHover={{ scale: 1.05 }}
