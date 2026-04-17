@@ -5,6 +5,7 @@ import { useAuth } from '@/context/AuthContext';
 import { bannerItems } from '@/data/shopItems';
 import PageHeader from '@/components/PageHeader';
 import BottomNav from '@/components/BottomNav';
+import BannerEffectLayer from '@/components/BannerEffectLayer';
 import { Star, Swords, Crown, Medal, Coins, ShoppingBag } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
@@ -26,10 +27,9 @@ interface LeaderboardEntry {
   coins: number;
 }
 
-const getBannerGradient = (bannerId: string | null): string | null => {
+const getBannerInfo = (bannerId: string | null) => {
   if (!bannerId) return null;
-  const b = bannerItems.find(bi => bi.id === bannerId);
-  return b ? b.gradient : null;
+  return bannerItems.find(bi => bi.id === bannerId) || null;
 };
 
 const LeaderboardPage = () => {
