@@ -4,8 +4,9 @@ import { useProgress } from '@/context/ProgressContext';
 import { shopItems, bannerItems } from '@/data/shopItems';
 import PageHeader from '@/components/PageHeader';
 import BottomNav from '@/components/BottomNav';
+import BannerEffectLayer from '@/components/BannerEffectLayer';
 import { useNavigate } from 'react-router-dom';
-import { Coins, ShoppingBag, Palette, Zap, Check, Lock } from 'lucide-react';
+import { Coins, ShoppingBag, Palette, Zap, Check, Lock, Sparkles } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 const ShopPage = () => {
@@ -168,20 +169,33 @@ const ShopPage = () => {
                     whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.97 }}
                     onClick={() => handleBuyBanner(banner.id, banner.price)}
-                    className={`relative overflow-hidden rounded-2xl border-2 p-4 text-center transition-colors ${
-                      equipped ? 'border-primary bg-primary/10' : owned ? 'border-border bg-card' : 'border-border bg-card'
-                    }`}
+                    className={`relative overflow-hidden rounded-2xl border-2 p-4 text-center transition-colors min-h-[130px] ${
+                      equipped
+                        ? 'border-primary'
+                        : banner.premium
+                          ? 'border-accent/50'
+                          : 'border-border'
+                    } bg-card`}
                   >
-                    <div className={`absolute inset-0 bg-gradient-to-r ${banner.gradient} opacity-20`} />
+                    <BannerEffectLayer effect={banner.effect} gradient={banner.gradient} />
+                    {/* Readability overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-card/80 via-card/30 to-transparent pointer-events-none" />
+
+                    {banner.premium && (
+                      <div className="absolute top-1.5 right-1.5 z-10 flex items-center gap-0.5 px-1.5 py-0.5 bg-accent text-accent-foreground rounded-full text-[10px] font-extrabold shadow-md">
+                        <Sparkles size={10} /> PREMIUM
+                      </div>
+                    )}
+
                     <div className="relative">
-                      <span className="text-3xl">{banner.emoji}</span>
-                      <p className="font-bold text-foreground mt-1">{banner.name}</p>
+                      <span className="text-3xl drop-shadow-md">{banner.emoji}</span>
+                      <p className="font-bold text-foreground mt-1 drop-shadow-sm">{banner.name}</p>
                       {owned ? (
                         <p className="text-xs font-semibold mt-1 text-primary">
                           {equipped ? '✅ Utrustad' : 'Tryck för att utrusta'}
                         </p>
                       ) : (
-                        <p className="flex items-center justify-center gap-1 text-xs font-bold mt-1 text-muted-foreground">
+                        <p className="flex items-center justify-center gap-1 text-xs font-bold mt-1 text-foreground">
                           <Coins size={12} className="text-yellow-500" /> {banner.price}
                         </p>
                       )}
