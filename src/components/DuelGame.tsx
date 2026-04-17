@@ -68,7 +68,6 @@ const DuelGame = ({ duel, userId }: DuelGameProps) => {
       setCurrentIndex(prev => prev + 1);
       setSelectedAnswer(null);
       setShowAnswer(false);
-      setSelfAssessed(null);
     }
   };
 
