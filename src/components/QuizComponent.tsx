@@ -24,9 +24,17 @@ const QuizComponent = ({ questions, chapterId, onComplete }: QuizComponentProps)
   const { addQuizResult, updateStreak } = useProgress();
 
   const activeQuestions = useMemo(() => {
-    if (!retryMode) return questions;
-    const wrongIds = results.filter(r => !r.correct).map(r => r.questionId);
-    return questions.filter(q => wrongIds.includes(q.id));
+    const base = !retryMode
+      ? questions
+      : questions.filter(q => results.filter(r => !r.correct).map(r => r.questionId).includes(q.id));
+    // Shuffle options per question so the correct answer's position is random
+    return base.map(q => {
+      if (q.type === 'multiple-choice' && q.options) {
+        const shuffledOptions = [...q.options].sort(() => Math.random() - 0.5);
+        return { ...q, options: shuffledOptions };
+      }
+      return q;
+    });
   }, [retryMode, questions, results]);
 
   const current = activeQuestions[currentIndex];
