@@ -114,10 +114,16 @@ export const useProgress = () => {
 
 const levels = [
   { name: 'Nybörjare', minXp: 0, icon: '🌱' },
-  { name: 'Biologielev', minXp: 100, icon: '📖' },
-  { name: 'Kunnig', minXp: 300, icon: '🧪' },
-  { name: 'Expert', minXp: 600, icon: '🎓' },
-  { name: 'Mästare', minXp: 1000, icon: '👑' },
+  { name: 'Frögrodd', minXp: 100, icon: '🌿' },
+  { name: 'Biologielev', minXp: 250, icon: '📖' },
+  { name: 'Lärling', minXp: 500, icon: '🔬' },
+  { name: 'Kunnig', minXp: 1000, icon: '🧪' },
+  { name: 'Forskare', minXp: 1750, icon: '🧬' },
+  { name: 'Expert', minXp: 2750, icon: '🎓' },
+  { name: 'Veteran', minXp: 4000, icon: '🏅' },
+  { name: 'Mästare', minXp: 5500, icon: '👑' },
+  { name: 'Storgrand', minXp: 7500, icon: '🏆' },
+  { name: 'Biolog-legend', minXp: 10000, icon: '🌟' },
 ];
 
 export const ProgressProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {

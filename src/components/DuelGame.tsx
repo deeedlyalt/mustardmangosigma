@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { supabase } from '@/integrations/supabase/client';
 import { QuizQuestion } from '@/data/chapters';
@@ -10,7 +10,14 @@ interface DuelGameProps {
 }
 
 const DuelGame = ({ duel, userId }: DuelGameProps) => {
-  const questions: QuizQuestion[] = duel.questions || [];
+  const rawQuestions: QuizQuestion[] = duel.questions || [];
+  // Shuffle options per question so correct answer position is random (per-client)
+  const questions = useMemo(() => rawQuestions.map(q => {
+    if (q.type === 'multiple-choice' && q.options) {
+      return { ...q, options: [...q.options].sort(() => Math.random() - 0.5) };
+    }
+    return q;
+  }), [duel.id]);
   const isCreator = duel.creator_id === userId;
   const startTimeRef = useRef(Date.now());
 
