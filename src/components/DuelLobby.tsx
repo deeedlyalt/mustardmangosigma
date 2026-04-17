@@ -35,7 +35,10 @@ const DuelLobby = ({ pendingDuel }: DuelLobbyProps) => {
     if (!user || creating) return;
     setCreating(true);
 
-    const allQuestions = chapters.flatMap(c => c.questions.map(q => ({ ...q, chapterId: c.id })));
+    // Duels only use multiple-choice questions (fair & fast)
+    const allQuestions = chapters
+      .flatMap(c => c.questions.map(q => ({ ...q, chapterId: c.id })))
+      .filter(q => q.type === 'multiple-choice');
     const shuffled = [...allQuestions].sort(() => Math.random() - 0.5);
     const selected = shuffled.slice(0, 10);
 

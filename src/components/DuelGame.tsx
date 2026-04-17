@@ -30,9 +30,7 @@ const DuelGame = ({ duel, userId }: DuelGameProps) => {
   };
 
   const handleNext = async () => {
-    const isCorrect = current.type === 'multiple-choice'
-      ? selectedAnswer === current.correctAnswer
-      : selfAssessed === true;
+    const isCorrect = selectedAnswer === current.correctAnswer;
 
     const newCorrect = correctCount + (isCorrect ? 1 : 0);
     if (isCorrect) setCorrectCount(newCorrect);
