@@ -97,8 +97,7 @@ const LeaderboardPage = () => {
   };
 
   const renderEntry = (userId: string, displayName: string, equippedBanner: string | null, isMe: boolean, rightContent: React.ReactNode, index: number) => {
-    const gradient = getBannerGradient(equippedBanner);
-    const banner = equippedBanner ? bannerItems.find(b => b.id === equippedBanner) : null;
+    const banner = getBannerInfo(equippedBanner);
     return (
       <motion.div
         key={userId}
@@ -106,24 +105,26 @@ const LeaderboardPage = () => {
         animate={{ opacity: 1, x: 0 }}
         transition={{ delay: index * 0.03 }}
         className={`relative flex items-center gap-3 p-3 rounded-xl border-2 shadow-sm overflow-hidden ${
-          gradient
-            ? 'border-transparent shadow-lg ring-2 ring-offset-2 ring-offset-background ring-foreground/10'
+          banner
+            ? banner.premium
+              ? 'border-accent shadow-lg'
+              : 'border-transparent shadow-lg ring-2 ring-offset-2 ring-offset-background ring-foreground/10'
             : isMe
               ? 'border-primary bg-primary/10'
               : 'bg-card border-border'
         }`}
-        style={gradient ? { boxShadow: '0 4px 20px -4px hsl(var(--foreground) / 0.2)' } : undefined}
+        style={banner ? { boxShadow: banner.premium ? '0 4px 24px -4px hsl(var(--accent) / 0.5)' : '0 4px 20px -4px hsl(var(--foreground) / 0.2)' } : undefined}
       >
-        {gradient && (
+        {banner && (
           <>
-            <div className={`absolute inset-0 bg-gradient-to-r ${gradient} opacity-40`} />
-            <div className="absolute inset-0 bg-gradient-to-t from-background/70 via-background/20 to-transparent" />
+            <BannerEffectLayer effect={banner.effect} gradient={banner.gradient} />
+            <div className="absolute inset-0 bg-gradient-to-r from-background/80 via-background/30 to-transparent pointer-events-none" />
           </>
         )}
         <div className="relative w-6 flex justify-center">{getRankIcon(index)}</div>
         <div className="relative flex-1 min-w-0 flex items-center gap-2">
           {banner && <span className="text-xl drop-shadow-md">{banner.emoji}</span>}
-          <p className={`text-sm font-bold truncate ${isMe ? 'text-primary' : 'text-foreground'} ${gradient ? 'drop-shadow-sm' : ''}`}>
+          <p className={`text-sm font-bold truncate ${isMe ? 'text-primary' : 'text-foreground'} ${banner ? 'drop-shadow-sm' : ''}`}>
             {displayName} {isMe && '(du)'}
           </p>
         </div>
