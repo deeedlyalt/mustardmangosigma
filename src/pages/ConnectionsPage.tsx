@@ -6,10 +6,6 @@ import PageHeader from '@/components/PageHeader';
 import BottomNav from '@/components/BottomNav';
 import { Eye, EyeOff } from 'lucide-react';
 
-<div
-  className="min-h-screen bg-cover bg-center bg-no-repeat"
-  style={{ backgroundImage: "url('/background.jpg')" }}
->
 const chapterColorMap: Record<string, string> = {
   grundbiologi: 'bg-chapter-grundbiologi',
   ekologi: 'bg-chapter-ekologi',
